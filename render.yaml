@@ -9,11 +9,11 @@ services:
     # client existing at apps/api/generated/prisma), and the scoped
     # --filter=...@meal-planning/api target builds api plus its two workspace
     # dependencies (shared-types, algorithm) without also building web/mobile.
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm db:generate && pnpm turbo run build --filter=...@meal-planning/api
-    # Runs after build, before the new deploy goes live — applies any pending
-    # migrations against DATABASE_URL. `migrate deploy`, not `migrate dev`:
-    # applies existing migrations only, never prompts, never generates new ones.
-    preDeployCommand: pnpm db:migrate:deploy
+    # db:migrate:deploy runs here rather than as a preDeployCommand — that
+    # Render feature needs a paid plan; folding it into the build is the free-tier
+    # equivalent. `migrate deploy` (not `migrate dev`) only applies existing
+    # migrations, never prompts, never generates new ones — safe to run on every build.
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm db:generate && pnpm db:migrate:deploy && pnpm turbo run build --filter=...@meal-planning/api
     startCommand: node apps/api/dist/main.js
     envVars:
       - key: NODE_VERSION
