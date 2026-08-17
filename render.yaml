@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: meal-planning-api
+    runtime: node
+    plan: free
+    region: oregon
+    # Verified locally end-to-end before committing: db:generate must run
+    # before the turbo build (nest build depends on the generated Prisma
+    # client existing at apps/api/generated/prisma), and the scoped
+    # --filter=...@meal-planning/api target builds api plus its two workspace
+    # dependencies (shared-types, algorithm) without also building web/mobile.
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm db:generate && pnpm turbo run build --filter=...@meal-planning/api
+    # Runs after build, before the new deploy goes live — applies any pending
+    # migrations against DATABASE_URL. `migrate deploy`, not `migrate dev`:
+    # applies existing migrations only, never prompts, never generates new ones.
+    preDeployCommand: pnpm db:migrate:deploy
+    startCommand: node apps/api/dist/main.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      # Secrets and per-environment values — set manually in the Render
+      # dashboard, never committed. See README "Deployment" for where each
+      # one comes from.
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: EDAMAM_APP_ID
+        sync: false
+      - key: EDAMAM_APP_KEY
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        sync: false
+      - key: JWT_ACCESS_TTL
+        value: 15m
+      - key: REFRESH_TOKEN_TTL_DAYS
+        value: "30"

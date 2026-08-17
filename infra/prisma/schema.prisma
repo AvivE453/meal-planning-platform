@@ -1,0 +1,243 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../apps/api/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Sex {
+  male
+  female
+}
+
+enum ActivityLevel {
+  sedentary
+  light
+  moderate
+  active
+  very_active
+}
+
+enum Goal {
+  weight_loss
+  weight_gain
+  maintenance
+}
+
+enum RestrictionType {
+  allergy
+  intolerance
+  preference
+}
+
+enum FoodSource {
+  edamam
+  usda
+}
+
+enum MealSlot {
+  breakfast
+  lunch
+  dinner
+  snack
+}
+
+enum MealPlanStatus {
+  draft
+  active
+  completed
+}
+
+enum ActivityIntensity {
+  low
+  moderate
+  high
+}
+
+enum NutritionLogSource {
+  meal_plan
+  manual
+  search
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  profile            UserProfile?
+  restrictions       DietaryRestriction[]
+  refreshTokens      RefreshToken[]
+  weightLogs         WeightLog[]
+  activityLogs       ActivityLog[]
+  mealPlans          MealPlan[]
+  dailyNutritionLogs DailyNutritionLog[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model UserProfile {
+  userId         String        @id @map("user_id")
+  sex            Sex
+  dateOfBirth    DateTime      @map("date_of_birth") @db.Date
+  heightCm       Decimal       @map("height_cm")
+  activityLevel  ActivityLevel @map("activity_level")
+  goal           Goal
+  targetWeightKg Decimal?      @map("target_weight_kg")
+  weeklyRateKg   Decimal?      @map("weekly_rate_kg")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model DietaryRestriction {
+  id        String          @id @default(uuid())
+  userId    String          @map("user_id")
+  type      RestrictionType
+  value     String
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("dietary_restrictions")
+}
+
+model WeightLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  weightKg  Decimal  @map("weight_kg")
+  loggedAt  DateTime @map("logged_at")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, loggedAt])
+  @@map("weight_logs")
+}
+
+model ActivityLog {
+  id              String            @id @default(uuid())
+  userId          String            @map("user_id")
+  activityType    String            @map("activity_type")
+  durationMinutes Int               @map("duration_minutes")
+  caloriesBurned  Decimal?          @map("calories_burned")
+  intensity       ActivityIntensity
+  loggedAt        DateTime          @map("logged_at")
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, loggedAt])
+  @@map("activity_logs")
+}
+
+/// Durable subset of external nutrition-API data: only items actually
+/// referenced by a persisted meal plan or log get a row here, for FK
+/// integrity. Everything else lives only in the Redis search cache.
+model FoodItem {
+  id          String     @id @default(uuid())
+  externalId  String     @map("external_id")
+  source      FoodSource
+  name        String
+  brand       String?
+  calories    Decimal
+  proteinG    Decimal    @map("protein_g")
+  carbsG      Decimal    @map("carbs_g")
+  fatG        Decimal    @map("fat_g")
+  sugarG      Decimal    @map("sugar_g")
+  sodiumMg    Decimal    @map("sodium_mg")
+  servingQty  Decimal    @map("serving_qty")
+  servingUnit String     @map("serving_unit")
+  rawJson     Json       @map("raw_json")
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  mealPlanItems      MealPlanItem[]
+  dailyNutritionLogs DailyNutritionLog[]
+
+  @@unique([source, externalId])
+  @@map("food_items")
+}
+
+model MealPlan {
+  id             String         @id @default(uuid())
+  userId         String         @map("user_id")
+  date           DateTime       @db.Date
+  goalSnapshot   Goal           @map("goal_snapshot")
+  calorieTarget  Decimal        @map("calorie_target")
+  proteinTargetG Decimal        @map("protein_target_g")
+  carbsTargetG   Decimal        @map("carbs_target_g")
+  fatTargetG     Decimal        @map("fat_target_g")
+  status         MealPlanStatus @default(draft)
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items MealPlanItem[]
+
+  @@index([userId, date])
+  @@map("meal_plans")
+}
+
+model MealPlanItem {
+  id         String   @id @default(uuid())
+  mealPlanId String   @map("meal_plan_id")
+  foodItemId String   @map("food_item_id")
+  mealSlot   MealSlot @map("meal_slot")
+  servings   Decimal
+  calories   Decimal
+  proteinG   Decimal  @map("protein_g")
+  carbsG     Decimal  @map("carbs_g")
+  fatG       Decimal  @map("fat_g")
+  sortOrder  Int      @map("sort_order")
+
+  mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  foodItem FoodItem @relation(fields: [foodItemId], references: [id])
+
+  dailyNutritionLogs DailyNutritionLog[]
+
+  @@index([mealPlanId])
+  @@map("meal_plan_items")
+}
+
+model DailyNutritionLog {
+  id             String             @id @default(uuid())
+  userId         String             @map("user_id")
+  date           DateTime           @db.Date
+  foodItemId     String?            @map("food_item_id")
+  mealPlanItemId String?            @map("meal_plan_item_id")
+  servings       Decimal
+  calories       Decimal
+  proteinG       Decimal            @map("protein_g")
+  carbsG         Decimal            @map("carbs_g")
+  fatG           Decimal            @map("fat_g")
+  source         NutritionLogSource
+  loggedAt       DateTime           @map("logged_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foodItem     FoodItem?     @relation(fields: [foodItemId], references: [id])
+  mealPlanItem MealPlanItem? @relation(fields: [mealPlanItemId], references: [id])
+
+  @@index([userId, date])
+  @@map("daily_nutrition_logs")
+}

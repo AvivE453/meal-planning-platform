@@ -1,0 +1,207 @@
+# Meal Planning & Tracking Platform — Portfolio Project Plan
+
+## Context
+
+You're a CS grad building a portfolio project to demonstrate software engineering skill to employers, with ~2-3 months part-time. Your own concept already names the right ingredients (constraint-satisfaction/knapsack algorithm, five specific design patterns, external API integration, caching) — what a generic CRUD app can't show. The goal of this plan is to turn that concept into something concretely buildable: a real schema, real endpoints, real pseudocode for the algorithm, and a week-by-week path that ships something visible every week rather than one big-bang integration at the end.
+
+Two things shape every decision below:
+1. **You're solid on React (web) but new to React Native, backend/API design at production scale, Redis, and applying design patterns outside coursework.** So the timeline front-loads ramp-up for those instead of assuming fluency, and the algorithm — your strongest differentiator — gets real design time in weeks 6-7 rather than being rushed at the end.
+2. **This is for job hunting.** Every choice below is biased toward what a reviewer can actually see and evaluate in ~10 minutes: a live demo link, a readable architecture, tests on the hardest part of the system, and a case-study writeup that shows engineering judgment, not just a feature checklist.
+
+## Locked-in decisions
+
+- **Backend:** NestJS (TypeScript), not raw Express. Reasoning: your plan explicitly wants Adapter/Strategy/Observer/Builder/Proxy to be *visible and correctly applied*. NestJS's DI container makes Proxy-swapping a one-line provider change and Strategy-selection a factory provider, instead of you hand-rolling a DI container badly. This is the difference between patterns that look bolted-on vs. patterns that look native to the architecture.
+- **ORM:** Prisma (Postgres). Strong TS type generation, easy migrations, high recruiter-recognizability.
+- **Nutrition API:** Edamam Food Database as primary (generous free tier, has all needed nutrient fields). USDA FoodData Central is a documented stretch goal — adding it later is a clean demo of the Adapter pattern earning its keep (`UsdaFoodAdapter`, nothing else changes).
+- **Infra (all free/cheap tier):** Postgres on Supabase or Neon, Redis on Upstash, API on Render/Railway/Fly.io, web on Vercel, mobile via Expo (EAS build → downloadable APK + demo video; skip app store review, not worth it for a portfolio piece).
+- **Repo structure:** single repo, pnpm workspaces + Turborepo (not multi-repo, not Nx). A recruiter opens one repo and understands it in minutes; Turborepo's cached task pipeline is itself a small "knows real tooling" signal.
+
+```
+/
+├── apps/
+│   ├── api/            # NestJS backend
+│   ├── web/             # React + Vite web dashboard
+│   └── mobile/          # Expo / React Native app
+├── packages/
+│   ├── algorithm/       # KnapsackOptimizer, Strategies, Builder — framework-free, pure TS
+│   ├── shared-types/     # DTOs / domain types shared by api + web + mobile
+│   └── config/          # shared eslint/tsconfig/prettier
+├── infra/
+│   ├── docker-compose.yml   # local Postgres + Redis for dev
+│   └── prisma/               # schema.prisma, migrations
+├── .github/workflows/
+├── turbo.json
+└── pnpm-workspace.yaml
+```
+
+`packages/algorithm` is deliberately framework-free pure TypeScript — trivially unit-testable without spinning up Nest or a DB, and it's the single folder most worth a reviewer's attention.
+
+## System architecture & core request flow
+
+```
+Mobile (Expo/RN)        Web (React+Vite, Vercel)
+       └──────── HTTPS/JSON ────────┘
+                    │
+          API Server (NestJS) — Render/Railway/Fly.io
+                    │
+        ┌───────────┼──────────────┐
+   Postgres      Redis (Upstash)   │
+ (Supabase/Neon) - search cache    │
+ source of truth  - targets cache  │
+                  - rate limits    │
+                    │ (cache miss) │
+                    ▼
+        External Nutrition API (Edamam)
+```
+
+**`POST /meal-plans/generate` end-to-end** (the core use case, and where every pattern below actually fires):
+1. `JwtAuthGuard` validates the bearer token → attaches `userId`.
+2. `MealPlansService.generate(userId, date)` loads `UserProfile` + latest `weight_logs` entry, gets/computes TDEE.
+3. `StrategyFactory.forGoal(profile.goal)` returns a `MealGenerationStrategy` (**Strategy**) → calorie target + macro weight coefficients + exclusion rules.
+4. Daily calorie target is split into per-slot budgets (breakfast 25% / lunch 35% / dinner 30% / snack 10%).
+5. Per slot: `NutritionService.searchCandidates()` → `CachedNutritionApiClient` (**Proxy**, implements `NutritionApiClient`) checks Redis → miss delegates to `EdamamApiClient` → raw JSON normalized by `EdamamFoodAdapter` (**Adapter**) into `FoodItem[]`.
+6. Hard-constraint filter removes items violating allergies/restrictions/strategy exclusion thresholds (e.g. max sugar/serving).
+7. `KnapsackOptimizer.optimizeSlot()` runs a Multiple-Choice Knapsack DP over the filtered candidates.
+8. `MealPlanBuilder` (**Builder**) accumulates all four slots into a validated, immutable `MealPlan`.
+9. Persisted to Postgres, returned to client.
+10. Later, `POST /logs/weight` fires a domain event that invalidates the cached targets — see Observer section below.
+
+## Database schema (Postgres via Prisma)
+
+Key tables (full field lists to be written directly into `schema.prisma`, not repeated here in full):
+
+- `users`, `refresh_tokens` — auth
+- `user_profiles` (sex, DOB, height, activity_level, goal, target_weight_kg, weekly_rate_kg)
+- `dietary_restrictions` (allergy/intolerance/preference)
+- `weight_logs`, `activity_logs` — time-series user input
+- `food_items` — **durable subset** of external data actually referenced by a plan or log (external_id, source, name, calories, protein_g, carbs_g, fat_g, sugar_g, sodium_mg, serving_qty/unit, raw_json). Not every search hit gets persisted here — only ones that end up in a plan or a log, for FK integrity.
+- `meal_plans` (date, goal_snapshot, calorie/macro targets, status) + `meal_plan_items` (meal_slot, servings, denormalized calories/macros, sort_order)
+- `daily_nutrition_logs` — actual eaten/logged food, source = meal_plan | manual | search
+
+**Why this split matters (state it in the README):** Postgres holds anything durable/auditable/joinable — users, logs, plans, and only the food items actually used. Redis holds anything ephemeral/derived — search cache, computed targets, rate-limit counters. If Redis is flushed, nothing is lost; caches just repopulate. That's a deliberate tradeoff worth naming explicitly, not just "cache = fast."
+
+## API surface (representative, not exhaustive)
+
+| Method | Path | Notes |
+|---|---|---|
+| POST | `/auth/register`, `/auth/login`, `/auth/refresh`, `/auth/logout` | JWT + rotated refresh tokens |
+| GET/PATCH | `/users/me`, `PUT /users/me/profile` | |
+| GET | `/users/me/targets` | cache-aside, Redis key `user:{id}:targets` |
+| POST/GET/DELETE | `/logs/weight`, `/logs/activity`, `/logs/nutrition` | weight-log POST fires the domain event |
+| GET | `/foods/search?q=`, `/foods/:id` | Proxy → Adapter path; auth-gated even though not "your" data, to keep external rate-limit exposure behind your own per-user limiter |
+| POST | `/meal-plans/generate` | the core use case |
+| GET | `/meal-plans`, `/meal-plans/:id` | |
+| POST | `/meal-plans/:id/activate` | |
+| GET | `/analytics/progress`, `/analytics/nutrition-summary` | weight trend + adherence, feeds web charts |
+
+## The algorithm — Multiple-Choice Knapsack (the technical centerpiece)
+
+Vanilla 0/1 knapsack assumes integer weights and one-or-none per item. Real food doesn't work that way: calories are continuous, and users eat 0.5×/1×/1.5×/2× a serving. The correct model is the **Multiple-Choice Knapsack Problem (MCKP)** — a standard, named OR variant, not something bespoke. Use that term in the writeup; it's accurate and signals literature awareness.
+
+**Two-phase design:**
+- **Phase 1 (pre-filter, outside the DP):** drop any `FoodItem` violating an allergy/restriction or a strategy exclusion threshold (e.g. WeightLossStrategy excludes >20g sugar/serving unless tagged fruit). Pure function, independently unit-testable. Keeps exclusions out of the DP state space entirely.
+- **Phase 2 (the knapsack):** among filtered candidates, maximize a linear weighted macro-value score subject to a calorie budget. Reducing multi-objective "macro balance" to one additive score is a deliberate, standard OR simplification — name this tradeoff explicitly in the writeup.
+
+**Making it tractable:**
+- Discretize calories into **10-kcal buckets** (a 600-900 kcal slot → ~60-90 DP states; ≤10kcal rounding error is smaller than serving-size measurement error anyway).
+- Expand each base item into serving-multiple options `{0.5, 1, 1.5, 2}`; all options of one item form an MCKP **group** — at most one option per group selected.
+- With ~30-60 candidates × 4 multiples × ~80 buckets ≈ 10-20k DP transitions per slot — sub-10ms, runs **synchronously in the request handler**. No queue/background-job infra needed.
+
+**Strategy interface** (`packages/algorithm/src/strategies/MealGenerationStrategy.ts`):
+```typescript
+export interface MealGenerationStrategy {
+  readonly name: 'weight_loss' | 'weight_gain' | 'maintenance';
+  calculateDailyCalorieTarget(profile: UserProfile, tdee: number): number;
+  calculateMacroTargets(calorieTarget: number): { proteinG: number; carbsG: number; fatG: number };
+  getMacroWeights(): MacroWeights;      // { protein, carbs, fat, sugarPenalty, sodiumPenalty }
+  getExclusionRules(): ExclusionRule[]; // { trait, maxPerServing }
+}
+```
+`WeightLossStrategy` (tdee - 500, protein-weighted 3.0, sugar exclusion 20g), `WeightGainStrategy` (tdee + 350, looser exclusions, calorie-dense weighting), `MaintenanceStrategy` (tdee, balanced). `StrategyFactory.forGoal()` maps `profile.goal` → instance; `MealPlansService` never branches on goal itself.
+
+**Optimizer core** (`packages/algorithm/src/optimizer/KnapsackOptimizer.ts`) — standard MCKP DP: for each group (base item), for each serving-multiple option, update `dp[c] = max(dp[c], dp[c - cost] + value)` scanning calorie buckets high-to-low (0/1-per-group semantics), tracking `choice[group][bucket]` for reconstruction. Reconstruct by walking groups backward from the final budget bucket.
+
+**Explicitly note in the case study:**
+- Running the DP per-slot rather than jointly across the day is locally optimal per slot, not globally optimal for the day — a deliberate scope tradeoff, not an oversight.
+- Alternatives considered and why rejected: greedy value/calorie-ratio heuristic (faster, no optimality guarantee — good as a "fast fallback" for a single-slot regenerate endpoint); LP/ILP via a solver library (textbook-correct, but an opaque external dependency for a solo timeline). MCKP+DP is the sweet spot: deterministic, small bounded discretization error, fast enough synchronously, pure TypeScript, no infra.
+
+## Design pattern placement
+
+| Pattern | Interface | Concrete class(es) | File |
+|---|---|---|---|
+| Adapter | `FoodItemAdapter.adapt(raw): FoodItem` | `EdamamFoodAdapter` | `apps/api/src/nutrition/adapters/EdamamFoodAdapter.ts` |
+| Strategy | `MealGenerationStrategy` | `WeightLossStrategy`, `WeightGainStrategy`, `MaintenanceStrategy` | `packages/algorithm/src/strategies/*.ts` |
+| Builder | fluent `MealPlanBuilder` | `MealPlanBuilder` | `packages/algorithm/src/builder/MealPlanBuilder.ts` |
+| Proxy | `NutritionApiClient { search(); getById(); }` | real: `EdamamApiClient`, proxy: `CachedNutritionApiClient` | `apps/api/src/nutrition/clients/*.ts` |
+| Observer | see below | domain event + listener | `apps/api/src/users/events/*` |
+
+**Proxy/Adapter composition (order matters):** the Proxy caches the **raw** provider JSON, not the normalized `FoodItem`. `NutritionService` calls the Proxy (which returns raw JSON, from cache or live), then runs the Adapter itself over the result. This keeps "did I already fetch this" (Proxy) fully decoupled from "what shape is this data" (Adapter) — a future schema change to one never touches the other. Worth a line in the writeup.
+
+**Observer — the honest version, not a forced GoF-literal one:** classic GoF Observer assumes an in-process Subject/Observer graph. This is a stateless REST API talking to two separate client processes over a network — there's no shared object graph on the client side to attach to. So:
+1. **Server-side (real Observer):** NestJS's `EventEmitter2` as the Subject. `WeightLogsService.create()` emits `weight.logged`; a `RecalculateTargetsListener` (`@OnEvent('weight.logged')`) invalidates `user:{id}:targets` in Redis. This is a legitimate Observer application — Subject = emitter, Observers = listeners.
+2. **Client-facing "auto-update UI" (default approach):** TanStack Query on mobile/web invalidates the `targets`/`meal-plan` query keys after a successful weight-log mutation, triggering refetch. This is how real production REST apps achieve "reactive" UI — client-driven refetch-on-mutation — and is the right scope here.
+3. **Optional stretch (week 11 only, if time allows):** an SSE endpoint or WebSocket gateway pushing `targets.updated` off the same event — the closest thing to literal server-push Observer.
+
+## Caching strategy (Redis / Upstash)
+
+- Pattern: cache-aside (read-through) — no writes to the external API, so no invalidation complexity beyond TTL + the one explicit event-driven case (targets).
+- Keys: `food:search:{provider}:{sha1(normalizedQuery)}`, `food:item:{provider}:{externalId}`, `user:{userId}:targets`, `ratelimit:{userId}:{window}` (via `@upstash/ratelimit`, not hand-rolled INCR/EXPIRE).
+- TTLs: search results 24h, by-id lookups 7d (nutrition data is near-static), targets — **no TTL, explicit deletion** on `weight.logged` (staleness here has real UX cost, so event-driven beats a short TTL).
+- Data structure: plain strings via `SETEX` + `JSON.stringify` — Upstash bills per command, so simple GET/SETEX beats Hashes when there's no partial-field access need.
+
+## Auth
+
+Hand-rolled JWT + refresh tokens in NestJS (`@nestjs/passport`, `passport-jwt`, `bcrypt`) — not a managed provider. This is one of the cheapest, most commonly-interviewed backend fundamentals (password hashing, token issuance, refresh rotation, guards), and only a 2-3 day build. Access token: JWT, 15min TTL. Refresh token: hashed at rest, 30-day TTL, rotated on every use. Mobile stores tokens in `expo-secure-store` (never AsyncStorage); web keeps the access token in memory (not localStorage) — document that XSS tradeoff plainly rather than pretending it's production-hardened. If time pressure hits mid-project, a documented pivot to Supabase Auth is an acceptable fallback, but plan for hand-rolled first.
+
+## Testing & CI/CD
+
+Priority order given the time budget:
+1. **`packages/algorithm` unit tests — highest signal.** `KnapsackOptimizer`: hand-verifiable small fixtures, edge cases (budget too small, empty candidates, all filtered out), property-based invariant tests via `fast-check` (selected calories never exceed budget; ≤1 option per group). Each `Strategy`: pure formula tests. This is where a reviewer spends the most time — invest disproportionately here.
+2. **Integration tests on API endpoints** (NestJS test utilities + test DB). Cover auth flow; `POST /meal-plans/generate` happy path with a `FakeNutritionApiClient` swapped in via DI (works cleanly *because* Proxy sits behind an interface); weight-log write → cache invalidation.
+3. **A couple of Playwright E2E tests, web only** (login → dashboard → log weight → see updated chart). Explicitly skip Detox/RN E2E — document mobile coverage as unit/integration + manual QA + demo video, a reasonable scope cut for a solo project.
+4. Skip UI snapshot testing and load testing (one optional `autocannon` smoke test is a cheap nice-to-have, not required).
+
+CI (`.github/workflows/ci.yml`): `pnpm install --frozen-lockfile` → `turbo run lint typecheck test` (affected-package filtering) → `turbo run build`. Separate deploy workflows for API (Render/Railway/Fly.io, `prisma migrate deploy` pre-deploy step) and a manual `workflow_dispatch` EAS build for the mobile APK. Web deploys via Vercel's native git integration. Require CI green as a branch-protection rule before merge to `main`.
+
+## Milestones (10-12 weeks, part-time)
+
+Ramp-up for RN/Redis/auth is front-loaded (weeks 1-2); the algorithm gets weeks 6-7, its own prime real estate, not a end-of-project scramble.
+
+1. **Scaffolding + learning spikes** — monorepo, NestJS skeleton deployed with a health check, Postgres `users` migration. Timeboxed spikes: Expo hello-world on device, hand-written Redis GET/SET against Upstash. *Ships: three empty apps, all live.*
+2. **Auth end-to-end** — JWT/bcrypt/guards, register/login/refresh/logout, mobile+web login screens with secure token storage. *Ships: real login from both clients against the deployed API.*
+3. **Profile & logging** — profiles, restrictions, weight/activity logs, TDEE service (unit tested), mobile onboarding, web dashboard shell. *Ships: onboarding + first weight log visible on web.*
+4. **Nutrition API + Adapter** — Edamam integration, `NutritionApiClient`/`EdamamApiClient`, `EdamamFoodAdapter`, `GET /foods/search` (no caching yet). *Ships: live normalized food search.*
+5. **Redis + Proxy** — Upstash wired, `CachedNutritionApiClient`, cache-aside, DI swap, per-user rate limiting. *Ships: measurably faster second search call.*
+6-7. **The algorithm (biggest allocation)** — week 6: design MCKP model on paper, then Strategies + `StrategyFactory` + `KnapsackOptimizer` with heavy unit/property tests. Week 7: `MealPlanBuilder`, `MealPlansService.generate()` wiring, tables, endpoints, integration tests. *Ships: `/meal-plans/generate` returns a real goal-appropriate plan from live data — the portfolio centerpiece, demoable by end of week 7.*
+8. **Client UI + Observer** — mobile/web meal-plan screens, `weight.logged` event + listener, `GET /users/me/targets`, client-side query invalidation. *Ships: logging weight visibly updates targets.*
+9. **Dashboard depth + nutrition logging** — daily logs, manual/quick-add, web charts (weight trend, planned-vs-actual), mobile tracking screen. *Ships: full loop — generate, eat, see adherence.*
+10. **Testing hardening + CI/CD + deploy finalization** — fill coverage gaps (especially `packages/algorithm`), full Actions pipeline, EAS build, dogfooding/bug-fixing. *Ships: green CI, all three surfaces live, APK downloadable.*
+11. **Stretch + case-study drafting** — pick 1-2: single-slot regenerate endpoint, SSE targets push, greedy-vs-DP benchmark for the writeup. Start README/case-study now, not week 12.
+12. **Polish, demo video, buffer** — walkthrough video/GIFs, final architecture diagram + README + case study, absorb slippage (there will be some — budget for it).
+
+## Portfolio packaging
+
+- README order: problem statement → live demo links (web, API, APK/Expo, video) at the top → architecture diagram → tech stack table → **algorithm case-study** (MCKP framing, discretization tradeoff, alternatives considered/rejected) → design-patterns table (pattern → file → why) → local dev setup → CI badge.
+- Add `@nestjs/swagger` for a live interactive API explorer — nearly free given decorators you're already writing, strong professionalism signal.
+- A 60-90 second demo video/GIF at the top is the highest-ROI single artifact — most reviewers won't run the code but will watch it.
+- The case-study section is the real differentiator: *why* MCKP over vanilla 0/1 knapsack, *why* 10-kcal buckets, *what* alternatives were considered and rejected. That reasoning reads as engineering judgment, not a feature checklist.
+
+## Critical files (first ones to create)
+
+- `infra/prisma/schema.prisma` — full relational schema
+- `packages/algorithm/src/optimizer/KnapsackOptimizer.ts` — MCKP DP core
+- `packages/algorithm/src/strategies/MealGenerationStrategy.ts` (+ 3 concrete strategies) — Strategy pattern
+- `apps/api/src/nutrition/clients/CachedNutritionApiClient.ts` — Proxy pattern
+- `apps/api/src/nutrition/adapters/EdamamFoodAdapter.ts` — Adapter pattern
+- `packages/algorithm/src/builder/MealPlanBuilder.ts` — Builder pattern
+- `apps/api/src/users/events/RecalculateTargetsListener.ts` — Observer pattern (server side)
+
+## Verification (end-to-end, once built)
+
+- `pnpm turbo run lint typecheck test` passes locally and in CI on every PR.
+- `packages/algorithm` test suite runs standalone (`pnpm --filter algorithm test`) with no DB/network — confirms the optimizer is genuinely decoupled.
+- Manual smoke test against the deployed API: register → login → set profile/goal → `POST /meal-plans/generate` → confirm returned plan's total calories are within the strategy's target tolerance and no excluded-trait item appears.
+- Confirm caching works: call `GET /foods/search?q=chicken` twice, verify the second response is faster and check Upstash dashboard for a cache hit.
+- Confirm the Observer path: `POST /logs/weight`, then `GET /users/me/targets` reflects recalculated values without a manual cache clear.
+- Mobile: run via Expo Go on a physical device or simulator, walk through login → onboarding → generate plan → log weight.
+- Web: `pnpm --filter web dev`, walk through the same flow, confirm charts render from `/analytics/*` endpoints.

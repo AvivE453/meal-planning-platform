@@ -1,0 +1,57 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+dist-cjs/
+build/
+.turbo/
+.next/
+out/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# expo / react native
+.expo/
+.expo-shared/
+expo-env.d.ts
+web-build/
+.kotlin/
+.metro-health-check*
+*.jks
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+*.orig.*
+ios/
+android/
+
+# typescript build cache
+*.tsbuildinfo
+
+# prisma
+infra/prisma/*.db
+apps/api/generated/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+# personal claude code settings (not shared with the team)
+.claude/settings.local.json
+
+# test coverage
+coverage/

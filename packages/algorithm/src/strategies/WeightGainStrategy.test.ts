@@ -1,0 +1,30 @@
+import { describe, expect, it } from 'vitest';
+import { WeightGainStrategy } from './WeightGainStrategy.js';
+import { makeUserProfile } from '../testing/fixtures.js';
+
+const strategy = new WeightGainStrategy();
+
+describe('WeightGainStrategy', () => {
+  it('applies the default ~0.25kg/week surplus when the user has no custom rate', () => {
+    const profile = makeUserProfile({ weeklyRateKg: null });
+    const target = strategy.calculateDailyCalorieTarget(profile, 2500);
+    expect(target).toBeCloseTo(2500 + (0.25 * 7700) / 7, 5);
+  });
+
+  it('scales the surplus with the user-provided weekly rate', () => {
+    const profile = makeUserProfile({ weeklyRateKg: 0.5 });
+    const target = strategy.calculateDailyCalorieTarget(profile, 2500);
+    expect(target).toBeCloseTo(2500 + (0.5 * 7700) / 7, 5);
+  });
+
+  it('produces macro grams that reconstruct the calorie target', () => {
+    const calorieTarget = 3200;
+    const macros = strategy.calculateMacroTargets(calorieTarget);
+    const reconstructed = macros.proteinG * 4 + macros.carbsG * 4 + macros.fatG * 9;
+    expect(reconstructed).toBeCloseTo(calorieTarget, 5);
+  });
+
+  it('has no hard exclusion rules — hitting the surplus matters more than restricting traits', () => {
+    expect(strategy.getExclusionRules()).toEqual([]);
+  });
+});

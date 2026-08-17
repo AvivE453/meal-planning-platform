@@ -1,0 +1,246 @@
+.dashboard-shell {
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+  text-align: center;
+  font-family: system-ui, sans-serif;
+}
+
+.dashboard-shell > * + * {
+  margin-top: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.auth-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.auth-form input,
+.auth-form select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.auth-form button[type='submit'] {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  background: #1a7f37;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-form button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #0969da;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
+.auth-error {
+  color: #cf222e;
+  font-size: 0.9rem;
+}
+
+.inline-form {
+  text-align: left;
+}
+
+.inline-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.inline-form-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.inline-form-row input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inline-form-row button {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  background: #1a7f37;
+  color: white;
+  cursor: pointer;
+}
+
+.log-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.log-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.log-date {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.targets-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.targets-primary {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.targets-macros {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.meal-plan-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+}
+
+.meal-plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.meal-plan-header button {
+  padding: 0.4rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  background: #1a7f37;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.meal-plan-header button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.meal-plan-totals {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+}
+
+.meal-slot {
+  margin-top: 0.75rem;
+}
+
+.meal-slot-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.03em;
+}
+
+.meal-item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+}
+
+.meal-item-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.meal-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.log-item-button {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #1a7f37;
+  border-radius: 4px;
+  background: white;
+  color: #1a7f37;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.log-item-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chart-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem 0.5rem 0.5rem;
+  text-align: left;
+}
+
+.chart-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0 0.5rem;
+  margin-bottom: 0.25rem;
+}

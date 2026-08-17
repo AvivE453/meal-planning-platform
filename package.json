@@ -1,0 +1,30 @@
+{
+  "name": "meal-planning-platform",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "db:up": "docker compose -f infra/docker-compose.yml up -d",
+    "db:down": "docker compose -f infra/docker-compose.yml down",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:validate": "prisma validate"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.9.1",
+    "dotenv": "^17.4.2",
+    "prettier": "^3.9.6",
+    "prisma": "^7.9.1",
+    "turbo": "^2.10.10",
+    "typescript": "^5.9.3"
+  }
+}
