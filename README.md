@@ -132,10 +132,10 @@ One DTO (`CreateNutritionLogDto`) handles all three shapes, with fields required
 
 `GET /analytics/nutrition-summary?from=&to=` returns one row per calendar day (defaulting to the last 14 days, always including today) with **actual** totals — summed straight from that day's `daily_nutrition_logs` via a Prisma `groupBy` — alongside **planned** totals from that day's most-recently-*created* `MealPlan`, or `null` if no plan was ever generated for that day (a real absence, not a zero target). Regenerating a plan for the same date doesn't overwrite the old row (`POST /meal-plans/generate` always inserts a new one, by design — see the meal-plan section above), so "most recent by `createdAt`" is what decides which one counts as "the" plan for that day.
 
-Two charts on the web dashboard, built with **Recharts**:
+Two charts, built with **Recharts**:
 
-- **`WeightTrendChart`** — a line chart straight off the `weightLogs` state the dashboard already holds; no new endpoint needed; needs at least two weigh-ins to render.
-- **`NutritionSummaryChart`** — a grouped bar chart (planned vs. actual calories per day) fed by the new endpoint. Both charts refresh automatically after anything that could change them — logging food, generating a new plan — via the same `refreshX` callback pattern the rest of the dashboard already uses (e.g. `refreshTargetsAndLogs`), not a new pattern introduced just for charts.
+- **`WeightTrendChart`** — a line chart off the `weightLogs` the Weight page already fetches for its list; no separate endpoint needed; needs at least two weigh-ins to render.
+- **`NutritionSummaryChart`** — a grouped bar chart (planned vs. actual calories per day) on the Nutrition page, fed by the new endpoint.
 
 **Tradeoff, stated plainly:** Recharts pulls in D3 internals and pushed the web bundle from ~205KB to ~595KB minified. Reasonable for a portfolio dashboard behind a login, not something a production consumer-facing page should ship unsplit — code-splitting the chart bundle behind a dynamic `import()` would be the real fix, not done here since it's not required for local dev or the demo.
 
@@ -148,7 +148,9 @@ Mobile does not have charts — Recharts is DOM/SVG-based and doesn't run in Rea
 ```
 apps/
   api/       NestJS backend
-  web/       React + Vite web dashboard
+  web/       React + Vite web app — routed pages (react-router-dom), not one long scroll:
+             Home (targets + nav) / Meal Plan / Weight / Nutrition, each fetching its own
+             data on mount rather than one shared top-level state object
   mobile/    Expo / React Native app
 packages/
   algorithm/     KnapsackOptimizer, Strategies, Builder — framework-free, pure TS
