@@ -2,7 +2,16 @@
 
 A cross-platform health and nutrition system that generates goal-driven meal plans — weight loss, weight gain, or maintenance — by solving a constrained optimization problem over live nutrition data, then tracks progress against those plans over time.
 
-**Status:** early build. The full loop — generate a goal-driven meal plan, log what was actually eaten (from the plan, manually, or from a search), and see planned-vs-actual on a chart — works end-to-end on web (charts) and mobile (everything else), backed by auth, profile/weight tracking with Observer-driven target caching, and live nutrition search. All five core design patterns (Strategy, Builder, Adapter, Proxy, Observer) are built and wired in, and every feature is live-verified against real Postgres/Redis/Edamam, not just tests. See [Roadmap](#roadmap) — only deployment is left.
+**Status:** The full loop — generate a goal-driven meal plan, log what was actually eaten (from the plan, manually, or from a search), and see planned-vs-actual on a chart — works end-to-end on web (charts) and mobile (everything else), backed by auth, profile/weight tracking with Observer-driven target caching, and live nutrition search. All five core design patterns (Strategy, Builder, Adapter, Proxy, Observer) are built and wired in, and every feature is live-verified against real Postgres/Redis/Edamam, not just tests. Web and API are deployed live; see [Roadmap](#roadmap) for what's left (mobile build).
+
+## Live demo
+
+- **Web app:** [meal-planning-platform-web.vercel.app](https://meal-planning-platform-web.vercel.app)
+- **API:** [meal-planning-api-smp7.onrender.com](https://meal-planning-api-smp7.onrender.com) (`/health` for a quick check)
+
+Register a real account to try it — nothing is pre-seeded. **The API is on Render's free tier, which spins down after 15 minutes of inactivity: the first request after a while can take 50+ seconds while it wakes back up.** That's a free-tier characteristic, not a bug — refresh and it's fast from then on.
+
+Infra: Postgres on [Neon](https://neon.tech), Redis on [Upstash](https://upstash.com), API on [Render](https://render.com) (deployed from [`render.yaml`](render.yaml), a committed infra-as-code blueprint), web on [Vercel](https://vercel.com).
 
 ## Architecture
 
@@ -184,6 +193,27 @@ pnpm test
 pnpm build
 ```
 
+## Deployment
+
+Four services, matching the plan's original infra choices — no managed all-in-one platform, deliberately, to keep each piece swappable:
+
+| Piece | Provider | Notes |
+|---|---|---|
+| Postgres | [Neon](https://neon.tech) | Free tier, serverless — connection string needs `?sslmode=require` |
+| Redis | [Upstash](https://upstash.com) | Free tier — connection string is `rediss://` (TLS), not `redis://` |
+| API | [Render](https://render.com) | Free tier web service, deployed from the committed [`render.yaml`](render.yaml) blueprint |
+| Web | [Vercel](https://vercel.com) | Root directory set to `apps/web` in the project settings (monorepo — without this it tries to build the whole repo) |
+
+**The API deploy is infra-as-code**, not a manually-clicked-together dashboard config — `render.yaml` defines the build/start commands, and every command in it was verified locally before being committed (a genuinely clean build from a wiped `dist`/`generated` state, then the compiled `dist/main.js` actually boot-tested against a real Postgres+Redis, not just `tsc` succeeding). One real gotcha hit during setup: Render's **`preDeployCommand`** (the natural place to run `prisma migrate deploy`) is a **paid-plan-only feature** — Render's own validation caught this immediately when the blueprint was first applied. Fixed by folding the migration into `buildCommand` instead: `pnpm db:generate && pnpm db:migrate:deploy && pnpm turbo run build --filter=...@meal-planning/api`. `migrate deploy` (not `migrate dev`) only applies pending migrations and never prompts, so it's safe to run on every single build/deploy, not just the first one.
+
+**Env vars** the API needs in Render's dashboard (declared in `render.yaml` with `sync: false`, so Render prompts for them rather than committing values): `DATABASE_URL`, `REDIS_URL`, `EDAMAM_APP_ID`, `EDAMAM_APP_KEY`, `JWT_ACCESS_SECRET` (a fresh production value — **not** the dev placeholder committed in `.env.example`, generated via `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`). The web app needs exactly one: `VITE_API_URL`, pointing at the deployed API's URL.
+
+**CORS**: the API calls `app.enableCors()` with no origin restriction (`main.ts`) — fine for a portfolio project reachable at a known set of URLs, not something a real multi-tenant product would leave wide open. Verified directly against the deployed pair, not assumed: an `OPTIONS` preflight sent with the Vercel origin's `Origin` header against the live Render API returned the expected `access-control-allow-origin` header.
+
+**To redeploy**: push to `main`. Both Render and Vercel are connected directly to the GitHub repo and rebuild automatically on every push — no separate deploy step.
+
+**Verification, same standard as every feature above**: registered a real user against the live API (exercises Postgres), ran a real food search (exercises Redis + the live Edamam network call), and confirmed the CORS preflight — all against the actual deployed URLs, not local dev.
+
 ## Roadmap
 
 - [x] Monorepo scaffold, CI pipeline (lint/typecheck/test/build)
@@ -196,4 +226,5 @@ pnpm build
 - [x] Observer-driven target cache invalidation — `GET /users/me/targets` cached in Redis (no TTL), `weight.logged` event via `EventEmitter2` invalidates it on both weight-log create and delete, live-verified against real Postgres + Redis
 - [x] Nutrition/food logging — `POST/GET/DELETE /logs/nutrition`, all three sources (manual, meal_plan, search), live-verified against real Postgres + Edamam; `NutritionLogForm`/`NutritionLogList` + a "Log as eaten" button on `MealPlanCard` items, on both web and mobile
 - [x] Web dashboard charts — `GET /analytics/nutrition-summary` (planned-vs-actual, most-recent-plan-per-day), weight trend + calories bar chart via Recharts, live-verified; web only (Recharts doesn't run in React Native)
-- [ ] Deployed demo (web, API, mobile build)
+- [x] Deployed demo — web (Vercel) + API (Render) live, Postgres (Neon) + Redis (Upstash) provisioned, migrations applied, live-verified end-to-end including a real cross-origin request (CORS preflight checked directly, not assumed)
+- [ ] Mobile build (Expo/EAS APK + demo video) — not done yet
