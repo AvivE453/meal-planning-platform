@@ -1,9 +1,10 @@
 import type { MealPlan, MealPlanItem } from '@meal-planning/shared-types';
 import type { Prisma } from '../../generated/prisma/client';
 import { toFoodItem } from '../nutrition/food-item-persistence';
+import { toRecipeRef } from '../recipes/recipe.mapper';
 
 type PrismaMealPlanWithItems = Prisma.MealPlanGetPayload<{
-  include: { items: { include: { foodItem: true } } };
+  include: { items: { include: { foodItem: true; recipe: true } } };
 }>;
 
 function toMealPlanItem(
@@ -12,7 +13,8 @@ function toMealPlanItem(
   return {
     id: row.id,
     mealPlanId: row.mealPlanId,
-    foodItem: toFoodItem(row.foodItem),
+    foodItem: row.foodItem ? toFoodItem(row.foodItem) : null,
+    recipe: row.recipe ? toRecipeRef(row.recipe) : null,
     mealSlot: row.mealSlot,
     servings: Number(row.servings),
     calories: Number(row.calories),

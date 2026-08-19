@@ -1,0 +1,10 @@
+name,company,category,calories,protein_g,carbs_g,fat_g,saturated_fat_g,sugar_g,sodium_mg,base_unit,default_serving_weight_grams
+"Chicken Breast, cooked",Generic,Meat,165.0,31.0,0.0,3.6,1.0,0.0,74.0,100g,100.0
+"Chicken Breast, raw",Generic,Meat,110.0,23.0,0.0,1.2,0.3,0.0,45.0,100g,100.0
+"Cottage Cheese 5% (Tnuva)",Tnuva,Dairy,94.0,10.5,1.5,5.0,3.0,1.5,370.0,100g,100.0
+"Egg (S)",Generic,Eggs,57.0,5.0,0.3,3.8,1.2,0.2,57.0,1 Egg,40.0
+"Egg (M)",Generic,Eggs,64.0,5.7,0.3,4.3,1.4,0.2,64.0,1 Egg,45.0
+"Egg (L)",Generic,Eggs,72.0,6.3,0.4,4.8,1.6,0.2,71.0,1 Egg,50.0
+"Yellow Cheese 28% (Emek)",Emek,Dairy,86.0,6.1,0.0,7.0,4.3,0.0,213.0,1 Slice,25.0
+"Yellow Cheese 15% (Emek)",Emek,Dairy,64.0,7.4,0.1,3.8,2.3,0.0,200.0,1 Slice,25.0
+"Yellow Cheese 9% (Emek)",Emek,Dairy,51.0,7.9,0.1,2.3,1.3,0.0,213.0,1 Slice,25.0

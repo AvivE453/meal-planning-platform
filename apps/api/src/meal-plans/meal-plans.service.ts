@@ -1,6 +1,7 @@
 import {
+  BadRequestException,
+  ForbiddenException,
   Injectable,
-  Logger,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -12,32 +13,34 @@ import {
   optimizeSlot,
   StrategyFactory,
 } from '@meal-planning/algorithm';
-import type { MealPlanDraft } from '@meal-planning/algorithm';
-import type { FoodItem, MealPlan, MealSlot } from '@meal-planning/shared-types';
+import type { MealPlanDraft, SelectedItem } from '@meal-planning/algorithm';
+import type {
+  FoodItem,
+  MacroWeights,
+  MealPlan,
+  ExclusionRule,
+  DietaryRestriction,
+} from '@meal-planning/shared-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProfileService } from '../profile/profile.service';
 import { WeightLogsService } from '../logs/weight-logs.service';
 import { RestrictionsService } from '../restrictions/restrictions.service';
-import { NutritionService } from '../nutrition/nutrition.service';
 import { upsertFoodItem } from '../nutrition/food-item-persistence';
+import { RecipesService } from '../recipes/recipes.service';
+import { toRecipeCandidate, recipeIdOf } from '../recipes/recipe-candidate';
 import { filterByRestrictions } from './restriction-filter';
-import {
-  SLOT_CALORIE_SHARE,
-  SLOT_CANDIDATE_QUERIES,
-  SLOT_ORDER,
-} from './candidate-queries';
+import { SLOT_CALORIE_SHARE, SLOT_ORDER } from './candidate-queries';
 import { toMealPlan } from './meal-plan.mapper';
+import type { AddMealPlanItemDto } from './dto/add-meal-plan-item.dto';
 
 @Injectable()
 export class MealPlansService {
-  private readonly logger = new Logger(MealPlansService.name);
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
     private readonly weightLogsService: WeightLogsService,
     private readonly restrictionsService: RestrictionsService,
-    private readonly nutritionService: NutritionService,
+    private readonly recipesService: RecipesService,
   ) {}
 
   async generate(userId: string, date?: string): Promise<MealPlan> {
@@ -69,6 +72,10 @@ export class MealPlansService {
     const weights = strategy.getMacroWeights();
     const exclusionRules = strategy.getExclusionRules();
 
+    // Recipes are now slot-tagged (Recipe.mealSlot) — each slot only ever
+    // sees the recipes tagged for it, not the user's whole recipe list.
+    const recipes = await this.recipesService.findAllByUserId(userId);
+
     const planDate = date ?? new Date().toISOString().slice(0, 10);
     const builder = new MealPlanBuilder()
       .forUser(userId)
@@ -76,17 +83,136 @@ export class MealPlansService {
       .withStrategy(strategy, calorieTarget);
 
     for (const slot of SLOT_ORDER) {
-      const candidates = await this.gatherCandidates(slot);
-      const allowed = filterByRestrictions(
-        filterExcluded(candidates, exclusionRules),
-        restrictions,
-      );
       const slotBudget = calorieTarget * SLOT_CALORIE_SHARE[slot];
-      builder.addSlot(slot, optimizeSlot(allowed, slotBudget, weights));
+      const candidates = recipes
+        .filter((recipe) => recipe.mealSlot === slot)
+        .map(toRecipeCandidate);
+      const selections = this.selectSlotItems(
+        candidates,
+        slotBudget,
+        exclusionRules,
+        restrictions,
+        weights,
+      );
+      builder.addSlot(slot, selections);
     }
 
     const draft = this.buildOrThrow(builder);
     return this.persist(draft);
+  }
+
+  /**
+   * Recipes-only: a slot's candidates are exactly the user's own recipes
+   * tagged for that slot. A slot with no matching recipes (or none that fit
+   * the budget/restrictions) simply comes back empty — MealPlanBuilder only
+   * rejects a plan for going *over* target, never under.
+   */
+  private selectSlotItems(
+    candidates: FoodItem[],
+    slotBudget: number,
+    exclusionRules: ExclusionRule[],
+    restrictions: DietaryRestriction[],
+    weights: MacroWeights,
+  ): SelectedItem[] {
+    const allowed = filterByRestrictions(
+      filterExcluded(candidates, exclusionRules),
+      restrictions,
+    );
+    return optimizeSlot(allowed, slotBudget, weights);
+  }
+
+  /**
+   * "Find meal" flow: adds a single food or recipe to an already-generated
+   * plan, distinct from whole-plan generation. Doesn't go through
+   * MealPlanBuilder's calorie-tolerance check — that guards the optimizer's
+   * own output, not a deliberate manual addition the user asked for.
+   */
+  async addItem(
+    userId: string,
+    planId: string,
+    dto: AddMealPlanItemDto,
+  ): Promise<MealPlan> {
+    const plan = await this.prisma.mealPlan.findUnique({
+      where: { id: planId },
+    });
+    if (!plan) {
+      throw new NotFoundException('Meal plan not found');
+    }
+    if (plan.userId !== userId) {
+      throw new ForbiddenException();
+    }
+    if (!dto.recipeId && !dto.foodItemId) {
+      throw new BadRequestException('Provide either recipeId or foodItemId');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      let foodItemId: number | null = null;
+      let recipeId: string | null = null;
+      let perServing: {
+        calories: number;
+        proteinG: number;
+        carbsG: number;
+        fatG: number;
+      };
+
+      if (dto.recipeId) {
+        // findOne already 404s/403s on a missing or not-owned recipe.
+        const recipe = await this.recipesService.findOne(userId, dto.recipeId);
+        recipeId = recipe.id;
+        perServing = {
+          calories: recipe.calories,
+          proteinG: recipe.proteinG,
+          carbsG: recipe.carbsG,
+          fatG: recipe.fatG,
+        };
+      } else {
+        const foodItem = await tx.foodItem.findUnique({
+          where: { foodId: dto.foodItemId! },
+        });
+        if (!foodItem) {
+          throw new NotFoundException(`Food item ${dto.foodItemId} not found`);
+        }
+        foodItemId = foodItem.foodId;
+        perServing = {
+          calories: Number(foodItem.calories),
+          proteinG: Number(foodItem.proteinG),
+          carbsG: Number(foodItem.carbsG),
+          fatG: Number(foodItem.fatG),
+        };
+      }
+
+      const { _max } = await tx.mealPlanItem.aggregate({
+        where: { mealPlanId: planId },
+        _max: { sortOrder: true },
+      });
+      const sortOrder = (_max.sortOrder ?? -1) + 1;
+
+      await tx.mealPlanItem.create({
+        data: {
+          mealPlanId: planId,
+          foodItemId,
+          recipeId,
+          mealSlot: dto.mealSlot,
+          servings: dto.servings,
+          calories: perServing.calories * dto.servings,
+          proteinG: perServing.proteinG * dto.servings,
+          carbsG: perServing.carbsG * dto.servings,
+          fatG: perServing.fatG * dto.servings,
+          sortOrder,
+        },
+      });
+    });
+
+    const updated = await this.prisma.mealPlan.findUniqueOrThrow({
+      where: { id: planId },
+      include: {
+        items: {
+          include: { foodItem: true, recipe: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
+    });
+    return toMealPlan(updated);
   }
 
   async findAllByUserId(userId: string): Promise<MealPlan[]> {
@@ -94,7 +220,10 @@ export class MealPlansService {
       where: { userId },
       orderBy: { createdAt: 'desc' },
       include: {
-        items: { include: { foodItem: true }, orderBy: { sortOrder: 'asc' } },
+        items: {
+          include: { foodItem: true, recipe: true },
+          orderBy: { sortOrder: 'asc' },
+        },
       },
     });
     return plans.map(toMealPlan);
@@ -111,40 +240,6 @@ export class MealPlansService {
           : 'Could not generate a meal plan from the available candidates',
       );
     }
-  }
-
-  /**
-   * Pools candidates from a slot's fixed search-term list, deduped by food id
-   * (the same food often turns up for more than one term). Runs through the
-   * existing cached search path, so a warm Redis cache makes this fast even
-   * though generation issues several live-shaped calls per slot.
-   *
-   * Sequential, not Promise.all, to avoid a self-inflicted concurrency spike.
-   * More importantly, each term's search failure is caught and skipped rather
-   * than left to abort the whole generation: live-verifying against Edamam's
-   * free tier showed a real requests-per-minute cap well below what a full
-   * cold-cache generation needs in one burst (up to 16 live calls across 4
-   * slots). One flaky/rate-limited term should degrade that slot's candidate
-   * pool, not fail the entire plan — and after the first successful run, most
-   * terms are Redis hits and never touch Edamam's limit again anyway.
-   */
-  private async gatherCandidates(slot: MealSlot): Promise<FoodItem[]> {
-    const byId = new Map<string, FoodItem>();
-    for (const term of SLOT_CANDIDATE_QUERIES[slot]) {
-      try {
-        const items = await this.nutritionService.search(term);
-        for (const item of items) {
-          if (!byId.has(item.id)) {
-            byId.set(item.id, item);
-          }
-        }
-      } catch (err) {
-        this.logger.warn(
-          `Candidate search failed for "${term}" (${slot}): ${err instanceof Error ? err.message : String(err)}`,
-        );
-      }
-    }
-    return [...byId.values()];
   }
 
   /**
@@ -169,12 +264,19 @@ export class MealPlansService {
       });
 
       for (const itemDraft of draft.items) {
-        const foodItem = await upsertFoodItem(tx, itemDraft.foodItem);
+        const recipeId = recipeIdOf(itemDraft.foodItem);
+        // A recipe-sourced candidate never gets a food_items row (see
+        // recipe-candidate.ts) — its own denormalized calories/macros below
+        // are all persistence needs; foodItemId stays null.
+        const foodItemId = recipeId
+          ? null
+          : (await upsertFoodItem(tx, itemDraft.foodItem)).foodId;
 
         await tx.mealPlanItem.create({
           data: {
             mealPlanId: plan.id,
-            foodItemId: foodItem.id,
+            foodItemId,
+            recipeId,
             mealSlot: itemDraft.mealSlot,
             servings: itemDraft.servings,
             calories: itemDraft.calories,
@@ -192,7 +294,10 @@ export class MealPlansService {
     const plan = await this.prisma.mealPlan.findUniqueOrThrow({
       where: { id: planId },
       include: {
-        items: { include: { foodItem: true }, orderBy: { sortOrder: 'asc' } },
+        items: {
+          include: { foodItem: true, recipe: true },
+          orderBy: { sortOrder: 'asc' },
+        },
       },
     });
     return toMealPlan(plan);

@@ -1,13 +1,14 @@
 /**
  * Raw Edamam Food Database API v2 (/parser) response shape — only the fields
- * this app actually reads. Field names (ENERC_KCAL, PROCNT, FAT, CHOCDF,
- * SUGAR, NA) come straight from Edamam's nutrient ontology, verified against
- * https://developer.edamam.com/food-database-api-docs.
+ * this app actually reads. Field names (ENERC_KCAL, PROCNT, FAT, FASAT,
+ * CHOCDF, SUGAR, NA) come straight from Edamam's nutrient ontology, verified
+ * against https://developer.edamam.com/food-database-api-docs.
  */
 export interface EdamamNutrients {
   ENERC_KCAL?: number;
   PROCNT?: number;
   FAT?: number;
+  FASAT?: number;
   CHOCDF?: number;
   SUGAR?: number;
   NA?: number;
@@ -52,7 +53,7 @@ export interface EdamamNutrientEntry {
 }
 
 type EdamamNutrientTag =
-  'ENERC_KCAL' | 'PROCNT' | 'FAT' | 'CHOCDF' | 'SUGAR' | 'NA';
+  'ENERC_KCAL' | 'PROCNT' | 'FAT' | 'FASAT' | 'CHOCDF' | 'SUGAR' | 'NA';
 
 export interface EdamamNutrientsResponse {
   calories?: number;

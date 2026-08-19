@@ -20,6 +20,7 @@ function hint(
         ENERC_KCAL: 100,
         PROCNT: 10,
         FAT: 5,
+        FASAT: 1,
         CHOCDF: 10,
         SUGAR: 2,
         NA: 50,
@@ -48,6 +49,7 @@ describe('EdamamFoodAdapter', () => {
               ENERC_KCAL: 165,
               PROCNT: 31,
               FAT: 3.6,
+              FASAT: 1.1,
               CHOCDF: 0,
               SUGAR: 0,
               NA: 74,
@@ -65,32 +67,29 @@ describe('EdamamFoodAdapter', () => {
 
     expect(item).toMatchObject({
       id: 'food_chicken',
-      externalId: 'food_chicken',
-      source: 'edamam',
       name: 'Chicken breast, meat only, cooked',
-      brand: null,
-      servingUnit: 'Serving',
-      servingQty: 1,
+      category: 'generic-foods',
+      baseUnit: 'Serving',
+      defaultServingWeightGrams: 172,
     });
     expect(item.calories).toBeCloseTo(165 * 1.72, 2);
     expect(item.proteinG).toBeCloseTo(31 * 1.72, 2);
+    expect(item.saturatedFatG).toBeCloseTo(1.1 * 1.72, 2);
     expect(item.sodiumMg).toBeCloseTo(74 * 1.72, 2);
   });
 
   it('falls back to a "Gram" measure when no "Serving" measure is present', () => {
     const response: EdamamParserResponse = {
       hints: [
-        hint(
-          { foodId: 'food_bar', label: 'Protein Bar', brand: 'GenericBrand' },
-          [{ uri: 'x#gram', label: 'Gram', weight: 1 }],
-        ),
+        hint({ foodId: 'food_bar', label: 'Protein Bar' }, [
+          { uri: 'x#gram', label: 'Gram', weight: 1 },
+        ]),
       ],
     };
 
     const [item] = adapter.adapt(response);
 
-    expect(item.brand).toBe('GenericBrand');
-    expect(item.servingUnit).toBe('Gram');
+    expect(item.baseUnit).toBe('Gram');
     // weight 1 -> scale 0.01, i.e. per-gram values
     expect(item.calories).toBeCloseTo(1, 2);
   });
@@ -106,7 +105,7 @@ describe('EdamamFoodAdapter', () => {
 
     const [item] = adapter.adapt(response);
 
-    expect(item.servingUnit).toBe('Package');
+    expect(item.baseUnit).toBe('Package');
     expect(item.calories).toBeCloseTo(100 * 3.5, 2);
   });
 
@@ -117,8 +116,22 @@ describe('EdamamFoodAdapter', () => {
 
     const [item] = adapter.adapt(response);
 
-    expect(item.servingUnit).toBe('Gram');
+    expect(item.baseUnit).toBe('Gram');
     expect(item.calories).toBeCloseTo(100, 2);
+  });
+
+  it('defaults category to "Uncategorized" when Edamam omits it', () => {
+    const response: EdamamParserResponse = {
+      hints: [
+        hint({ foodId: 'food_nocat', category: undefined }, [
+          { uri: 'x', label: 'Gram', weight: 1 },
+        ]),
+      ],
+    };
+
+    const [item] = adapter.adapt(response);
+
+    expect(item.category).toBe('Uncategorized');
   });
 
   it('skips hints with no usable calorie data', () => {
@@ -155,20 +168,6 @@ describe('EdamamFoodAdapter', () => {
 
     expect(items.map((i) => i.id)).toEqual(['food_a', 'food_b']);
   });
-
-  it('carries the chosen measure URI, needed for a later detailed-nutrients lookup', () => {
-    const response: EdamamParserResponse = {
-      hints: [
-        hint({ foodId: 'food_chicken' }, [
-          { uri: 'edamam.owl#Measure_serving', label: 'Serving', weight: 172 },
-        ]),
-      ],
-    };
-
-    const [item] = adapter.adapt(response);
-
-    expect(item.measureUri).toBe('edamam.owl#Measure_serving');
-  });
 });
 
 describe('EdamamFoodAdapter.adaptNutrients', () => {
@@ -180,6 +179,7 @@ describe('EdamamFoodAdapter.adaptNutrients', () => {
     totalNutrients: {
       ENERC_KCAL: { label: 'Energy', quantity: 326.4, unit: 'kcal' },
       FAT: { label: 'Fat', quantity: 7.1264, unit: 'g' },
+      FASAT: { label: 'Saturated', quantity: 2.0264, unit: 'g' },
       CHOCDF: { label: 'Carbs', quantity: 0, unit: 'g' },
       SUGAR: { label: 'Sugars', quantity: 0, unit: 'g' },
       PROCNT: { label: 'Protein', quantity: 61.2, unit: 'g' },
@@ -195,6 +195,7 @@ describe('EdamamFoodAdapter.adaptNutrients', () => {
       proteinG: 61.2,
       carbsG: 0,
       fatG: 7.13,
+      saturatedFatG: 2.03,
       sugarG: 0,
       sodiumMg: 122.4,
     });
@@ -206,6 +207,7 @@ describe('EdamamFoodAdapter.adaptNutrients', () => {
       proteinG: 0,
       carbsG: 0,
       fatG: 0,
+      saturatedFatG: 0,
       sugarG: 0,
       sodiumMg: 0,
     });

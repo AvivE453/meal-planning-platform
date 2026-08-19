@@ -1,40 +1,38 @@
 import type { Goal } from './user.js';
 
-export type FoodSource = 'edamam' | 'usda';
-
 /**
- * Normalized food item shape produced by a FoodItemAdapter (Adapter pattern),
- * regardless of which external provider it came from.
+ * An ingredient from the app's own curated food_items dataset. Every
+ * nutrition value is defined per one `baseUnit` — almost always "100g", but
+ * a genuinely discrete food (e.g. egg) instead uses a unit like "1 medium
+ * egg" with its own per-egg values, so a recipe's `amount` multiplier never
+ * needs unit-conversion math (amount=2 against a "1 medium egg" item means
+ * "2 eggs"). `defaultServingWeightGrams` is the gram-equivalent of one
+ * baseUnit, always populated (100 for the 100g default).
  */
 export interface FoodItem {
   id: string;
-  externalId: string;
-  source: FoodSource;
   name: string;
-  brand: string | null;
-  calories: number; // per serving
+  /** Brand/manufacturer this data is specific to (e.g. "Tnuva") — null for generic entries. */
+  company: string | null;
+  category: string;
+  calories: number;
   proteinG: number;
   carbsG: number;
   fatG: number;
+  saturatedFatG: number;
   sugarG: number;
   sodiumMg: number;
-  servingQty: number;
-  servingUnit: string;
-  /**
-   * Provider-specific handle for the exact serving measure this item was
-   * scaled to — needed to request a full, accurate nutrient breakdown
-   * (search results carry Edamam's fast/incomplete nutrient set; sugar and
-   * sodium in particular need a follow-up GET /foods/:id/nutrients call).
-   */
-  measureUri?: string;
+  baseUnit: string;
+  defaultServingWeightGrams: number;
 }
 
-/** Full, per-serving nutrient breakdown — the accurate figures search results don't carry. */
+/** Full nutrient breakdown — the accurate figures search results don't carry. */
 export interface NutrientBreakdown {
   calories: number;
   proteinG: number;
   carbsG: number;
   fatG: number;
+  saturatedFatG: number;
   sugarG: number;
   sodiumMg: number;
 }

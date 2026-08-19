@@ -7,12 +7,13 @@ import { Onboarding } from '../profile/Onboarding';
 
 export interface DashboardContext {
   profile: UserProfile;
+  onProfileUpdated: (profile: UserProfile) => void;
 }
 
 const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/plan', label: 'Meal Plan' },
-  { to: '/weight', label: 'Weight' },
+  { to: '/weight', label: 'Tracking' },
   { to: '/nutrition', label: 'Nutrition' },
 ];
 
@@ -53,10 +54,12 @@ export function DashboardLayout() {
 
   return (
     <div className="app-shell">
-      <header className="app-header">
-        <span className="app-title">Meal Planning &amp; Tracking</span>
+      <div className="app-toolbar-right">
         <span className="app-user">{user?.email}</span>
-      </header>
+        <button type="button" className="logout-button" onClick={() => void logout()}>
+          Log out
+        </button>
+      </div>
       <nav className="app-nav">
         {NAV_LINKS.map((link) => (
           <NavLink
@@ -70,11 +73,8 @@ export function DashboardLayout() {
         ))}
       </nav>
       <main className="app-content">
-        <Outlet context={{ profile } satisfies DashboardContext} />
+        <Outlet context={{ profile, onProfileUpdated: setProfile } satisfies DashboardContext} />
       </main>
-      <button type="button" className="logout-button" onClick={() => void logout()}>
-        Log out
-      </button>
     </div>
   );
 }

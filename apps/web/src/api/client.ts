@@ -1,18 +1,22 @@
 import type {
   ActivityLog,
+  AddMealPlanItemRequest,
   AuthenticatedUser,
   AuthResponse,
   CreateActivityLogRequest,
   CreateNutritionLogRequest,
+  CreateRecipeRequest,
   CreateRestrictionRequest,
   CreateWeightLogRequest,
   DailyNutritionLog,
   DietaryRestriction,
+  FoodItem,
   GenerateMealPlanRequest,
   LoginRequest,
   MealPlan,
   NutritionSummaryDay,
   NutritionTargets,
+  Recipe,
   RefreshRequest,
   RegisterRequest,
   UpsertProfileRequest,
@@ -91,6 +95,8 @@ export const mealPlansApi = {
   list: () => request<MealPlan[]>('/meal-plans'),
   generate: (body: Partial<GenerateMealPlanRequest> = {}) =>
     request<MealPlan>('/meal-plans/generate', { method: 'POST', body: JSON.stringify(body) }),
+  addItem: (planId: string, body: AddMealPlanItemRequest) =>
+    request<MealPlan>(`/meal-plans/${planId}/items`, { method: 'POST', body: JSON.stringify(body) }),
 };
 
 export const logsApi = {
@@ -110,6 +116,23 @@ export const logsApi = {
     create: (body: CreateNutritionLogRequest) =>
       request<DailyNutritionLog>('/logs/nutrition', { method: 'POST', body: JSON.stringify(body) }),
   },
+};
+
+export const foodsApi = {
+  search: (q?: string, category?: string) => {
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (category) params.set('category', category);
+    return request<FoodItem[]>(`/foods/search?${params.toString()}`);
+  },
+  categories: () => request<string[]>('/foods/categories'),
+};
+
+export const recipesApi = {
+  list: (q?: string) => request<Recipe[]>(`/recipes${q ? `?q=${encodeURIComponent(q)}` : ''}`),
+  create: (body: CreateRecipeRequest) =>
+    request<Recipe>('/recipes', { method: 'POST', body: JSON.stringify(body) }),
+  remove: (id: string) => request<void>(`/recipes/${id}`, { method: 'DELETE' }),
 };
 
 export const analyticsApi = {

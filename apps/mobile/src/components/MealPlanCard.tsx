@@ -89,7 +89,7 @@ export function MealPlanCard({
                   return (
                     <View key={item.id} style={styles.itemRow}>
                       <Text style={styles.itemName}>
-                        {item.foodItem.name} × {item.servings}
+                        {item.foodItem?.name ?? item.recipe?.name} × {item.servings}
                       </Text>
                       <View style={styles.itemActions}>
                         <Text style={styles.itemCalories}>{Math.round(item.calories)} kcal</Text>

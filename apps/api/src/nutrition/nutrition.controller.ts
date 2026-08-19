@@ -17,11 +17,19 @@ export class NutritionController {
   constructor(private readonly nutritionService: NutritionService) {}
 
   @Get('search')
-  search(@Query('q') query?: string): Promise<FoodItem[]> {
-    if (!query || query.trim().length === 0) {
-      throw new BadRequestException('Query parameter "q" is required');
+  search(
+    @Query('q') query?: string,
+    @Query('category') category?: string,
+  ): Promise<FoodItem[]> {
+    if ((!query || query.trim().length === 0) && !category) {
+      throw new BadRequestException('Provide a query "q" and/or a "category"');
     }
-    return this.nutritionService.search(query);
+    return this.nutritionService.search(query, category);
+  }
+
+  @Get('categories')
+  listCategories(): Promise<string[]> {
+    return this.nutritionService.listCategories();
   }
 
   @Get(':id/nutrients')

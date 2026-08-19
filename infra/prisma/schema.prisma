@@ -32,11 +32,6 @@ enum RestrictionType {
   preference
 }
 
-enum FoodSource {
-  edamam
-  usda
-}
-
 enum MealSlot {
   breakfast
   lunch
@@ -60,6 +55,7 @@ enum NutritionLogSource {
   meal_plan
   manual
   search
+  recipe
 }
 
 model User {
@@ -76,6 +72,7 @@ model User {
   activityLogs       ActivityLog[]
   mealPlans          MealPlan[]
   dailyNutritionLogs DailyNutritionLog[]
+  recipes            Recipe[]
 
   @@map("users")
 }
@@ -153,31 +150,79 @@ model ActivityLog {
   @@map("activity_logs")
 }
 
-/// Durable subset of external nutrition-API data: only items actually
-/// referenced by a persisted meal plan or log get a row here, for FK
-/// integrity. Everything else lives only in the Redis search cache.
+/// The app's own curated ingredient dataset — every nutrition value is
+/// defined per one `baseUnit` (almost always "100g"; a genuinely discrete
+/// food like egg instead defines baseUnit as "1 medium egg" with its own
+/// per-egg values, so a recipe's `amount` multiplier never needs unit
+/// conversion math). `defaultServingWeightGrams` is the gram-equivalent of
+/// one baseUnit, always populated (100 for the 100g default).
 model FoodItem {
-  id          String     @id @default(uuid())
-  externalId  String     @map("external_id")
-  source      FoodSource
-  name        String
-  brand       String?
-  calories    Decimal
-  proteinG    Decimal    @map("protein_g")
-  carbsG      Decimal    @map("carbs_g")
-  fatG        Decimal    @map("fat_g")
-  sugarG      Decimal    @map("sugar_g")
-  sodiumMg    Decimal    @map("sodium_mg")
-  servingQty  Decimal    @map("serving_qty")
-  servingUnit String     @map("serving_unit")
-  rawJson     Json       @map("raw_json")
-  createdAt   DateTime   @default(now()) @map("created_at")
+  foodId                    Int      @id @default(autoincrement()) @map("food_id")
+  name                      String   @unique
+  /// The brand/manufacturer this nutrition data is specific to (e.g. "Tnuva",
+  /// "Osem") — null for generic, brand-agnostic entries. Different brands of
+  /// what's otherwise the same food can have meaningfully different
+  /// nutrition, so this is informational display, not just a label.
+  company                   String?
+  category                  String
+  calories                  Decimal
+  proteinG                  Decimal  @map("protein_g")
+  carbsG                    Decimal  @map("carbs_g")
+  fatG                      Decimal  @map("fat_g")
+  saturatedFatG             Decimal  @map("saturated_fat_g")
+  sugarG                    Decimal  @map("sugar_g")
+  sodiumMg                  Decimal  @map("sodium_mg")
+  baseUnit                  String   @default("100g") @map("base_unit")
+  defaultServingWeightGrams Decimal  @default(100) @map("default_serving_weight_grams")
+  createdAt                 DateTime @default(now()) @map("created_at")
+
+  mealPlanItems      MealPlanItem[]
+  dailyNutritionLogs DailyNutritionLog[]
+  recipeIngredients  RecipeIngredient[]
+
+  @@map("food_items")
+}
+
+/// A user's own reusable composed meal — a name plus a list of ingredients,
+/// each an existing FoodItem scaled by `amount` (identical "multiplier of
+/// that food's own baseUnit" semantics MealPlanItem and DailyNutritionLog
+/// already use, e.g. amount=2 against a FoodItem whose baseUnit is "1 medium
+/// egg" means "2 eggs"). No separate yield/serving-count field: 1x a Recipe
+/// is defined as the sum of all its ingredients at their given amounts, so
+/// there's exactly one scaling mechanism, not two.
+model Recipe {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String
+  // Default is a safety net for pre-migration rows only (migrate deploy runs
+  // unattended on every build) — every API-created recipe passes this
+  // explicitly, never relying on the fallback.
+  mealSlot  MealSlot @default(lunch) @map("meal_slot")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ingredients RecipeIngredient[]
 
   mealPlanItems      MealPlanItem[]
   dailyNutritionLogs DailyNutritionLog[]
 
-  @@unique([source, externalId])
-  @@map("food_items")
+  @@index([userId])
+  @@index([userId, mealSlot])
+  @@map("recipes")
+}
+
+model RecipeIngredient {
+  id         String  @id @default(uuid())
+  recipeId   String  @map("recipe_id")
+  foodItemId Int     @map("food_item_id")
+  amount     Decimal
+  sortOrder  Int     @map("sort_order")
+
+  recipe   Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  foodItem FoodItem @relation(fields: [foodItemId], references: [foodId])
+
+  @@index([recipeId])
+  @@map("recipe_ingredients")
 }
 
 model MealPlan {
@@ -202,7 +247,12 @@ model MealPlan {
 model MealPlanItem {
   id         String   @id @default(uuid())
   mealPlanId String   @map("meal_plan_id")
-  foodItemId String   @map("food_item_id")
+  // Exactly one of foodItemId/recipeId is set per item — enforced by
+  // persist() being the single write path, not a DB constraint (mirrors how
+  // DailyNutritionLog's own nullable dual-FK below is already governed by
+  // application logic, not the schema).
+  foodItemId Int?     @map("food_item_id")
+  recipeId   String?  @map("recipe_id")
   mealSlot   MealSlot @map("meal_slot")
   servings   Decimal
   calories   Decimal
@@ -211,8 +261,9 @@ model MealPlanItem {
   fatG       Decimal  @map("fat_g")
   sortOrder  Int      @map("sort_order")
 
-  mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
-  foodItem FoodItem @relation(fields: [foodItemId], references: [id])
+  mealPlan MealPlan  @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  foodItem FoodItem? @relation(fields: [foodItemId], references: [foodId])
+  recipe   Recipe?   @relation(fields: [recipeId], references: [id], onDelete: SetNull)
 
   dailyNutritionLogs DailyNutritionLog[]
 
@@ -224,8 +275,9 @@ model DailyNutritionLog {
   id             String             @id @default(uuid())
   userId         String             @map("user_id")
   date           DateTime           @db.Date
-  foodItemId     String?            @map("food_item_id")
+  foodItemId     Int?               @map("food_item_id")
   mealPlanItemId String?            @map("meal_plan_item_id")
+  recipeId       String?            @map("recipe_id")
   servings       Decimal
   calories       Decimal
   proteinG       Decimal            @map("protein_g")
@@ -235,8 +287,9 @@ model DailyNutritionLog {
   loggedAt       DateTime           @map("logged_at")
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  foodItem     FoodItem?     @relation(fields: [foodItemId], references: [id])
+  foodItem     FoodItem?     @relation(fields: [foodItemId], references: [foodId])
   mealPlanItem MealPlanItem? @relation(fields: [mealPlanItemId], references: [id])
+  recipe       Recipe?       @relation(fields: [recipeId], references: [id], onDelete: SetNull)
 
   @@index([userId, date])
   @@map("daily_nutrition_logs")

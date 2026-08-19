@@ -41,6 +41,7 @@ export class EdamamFoodAdapter implements FoodItemAdapter {
       proteinG: round(n.PROCNT?.quantity ?? 0),
       carbsG: round(n.CHOCDF?.quantity ?? 0),
       fatG: round(n.FAT?.quantity ?? 0),
+      saturatedFatG: round(n.FASAT?.quantity ?? 0),
       sugarG: round(n.SUGAR?.quantity ?? 0),
       sodiumMg: round(n.NA?.quantity ?? 0),
     };
@@ -61,19 +62,18 @@ export class EdamamFoodAdapter implements FoodItemAdapter {
 
     return {
       id: food.foodId,
-      externalId: food.foodId,
-      source: 'edamam',
       name: food.label,
-      brand: food.brand ?? null,
+      company: food.brand ?? null,
+      category: food.category ?? 'Uncategorized',
       calories: scaleNutrient(nutrients.ENERC_KCAL, scale),
       proteinG: scaleNutrient(nutrients.PROCNT, scale),
       carbsG: scaleNutrient(nutrients.CHOCDF, scale),
       fatG: scaleNutrient(nutrients.FAT, scale),
+      saturatedFatG: scaleNutrient(nutrients.FASAT, scale),
       sugarG: scaleNutrient(nutrients.SUGAR, scale),
       sodiumMg: scaleNutrient(nutrients.NA, scale),
-      servingQty: 1,
-      servingUnit: measure.label,
-      measureUri: measure.uri || undefined,
+      baseUnit: measure.label,
+      defaultServingWeightGrams: measure.weight,
     };
   }
 }

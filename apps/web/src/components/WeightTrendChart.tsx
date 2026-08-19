@@ -22,7 +22,7 @@ export function WeightTrendChart({ logs }: { logs: WeightLog[] }) {
           <XAxis dataKey="date" tick={{ fontSize: 11 }} />
           <YAxis tick={{ fontSize: 11 }} domain={['auto', 'auto']} />
           <Tooltip formatter={(value) => [`${Number(value)} kg`, 'Weight']} />
-          <Line type="monotone" dataKey="weightKg" stroke="#1a7f37" strokeWidth={2} dot={{ r: 3 }} />
+          <Line type="monotone" dataKey="weightKg" stroke="#2563eb" strokeWidth={2} dot={{ r: 3, fill: '#2563eb' }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -39,6 +39,10 @@ android/
 infra/prisma/*.db
 apps/api/generated/
 
+# one-time import source data (not committed — too large, and reproducible
+# via the download link in the importing script's own header comment)
+apps/api/scripts/data/
+
 # logs
 *.log
 npm-debug.log*

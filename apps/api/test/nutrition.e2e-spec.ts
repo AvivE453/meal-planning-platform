@@ -13,14 +13,17 @@ import { PrismaService } from './../src/prisma/prisma.service';
 import { NUTRITION_API_CLIENT } from './../src/nutrition/clients/nutrition-api-client.interface';
 import { FakeNutritionApiClient } from './../src/nutrition/testing/fake-nutrition-api-client';
 
-describe('Nutrition search (e2e, real Adapter over a faked network client)', () => {
+describe('Nutrition (e2e)', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
   let fakeClient: FakeNutritionApiClient;
   const email = `nutrition-e2e-${randomUUID()}@example.com`;
   let accessToken: string;
+  const seededFoodIds: number[] = [];
 
   beforeAll(async () => {
+    // Still overridden — getNutrients() still calls the live client (that
+    // integration deliberately stays wired up), only search() no longer does.
     fakeClient = new FakeNutritionApiClient();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -50,6 +53,14 @@ describe('Nutrition search (e2e, real Adapter over a faked network client)', () 
 
   afterAll(async () => {
     await prisma.user.deleteMany({ where: { email } });
+    // food_items has no per-user FK to cascade-delete from — it's a shared,
+    // permanent dataset, so anything this file seeds must be cleaned up
+    // explicitly.
+    if (seededFoodIds.length > 0) {
+      await prisma.foodItem.deleteMany({
+        where: { foodId: { in: seededFoodIds } },
+      });
+    }
     await app.close();
   });
 
@@ -66,22 +77,47 @@ describe('Nutrition search (e2e, real Adapter over a faked network client)', () 
       .expect(400);
   });
 
-  it('returns normalized FoodItems built by the real Adapter over the fake client response', async () => {
-    const res = await request(app.getHttpServer())
-      .get('/foods/search?q=chicken breast')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .expect(200);
+  describe('search — local-only, food_items is the sole source', () => {
+    it('returns rows matching the query, case-insensitively, without ever calling the live client', async () => {
+      const probeTerm = `probe-${randomUUID()}`;
+      const row = await prisma.foodItem.create({
+        data: {
+          name: `${probeTerm} Item`,
+          category: 'Vegetable',
+          calories: 100,
+          proteinG: 10,
+          carbsG: 10,
+          fatG: 5,
+          saturatedFatG: 1,
+          sugarG: 0,
+          sodiumMg: 0,
+          baseUnit: '100g',
+          defaultServingWeightGrams: 100,
+        },
+      });
+      seededFoodIds.push(row.foodId);
 
-    const body = res.body as FoodItem[];
-    expect(body).toHaveLength(1);
-    expect(body[0]).toMatchObject({
-      id: 'food_fake_chicken',
-      source: 'edamam',
-      name: 'chicken breast (fake result)',
-      calories: 165,
-      proteinG: 31,
+      const callsBefore = fakeClient.calls.length;
+      const res = await request(app.getHttpServer())
+        .get(`/foods/search?q=${encodeURIComponent(probeTerm.toUpperCase())}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(200);
+
+      const body = res.body as FoodItem[];
+      expect(body.some((item) => item.id === String(row.foodId))).toBe(true);
+      expect(fakeClient.calls.length).toBe(callsBefore);
     });
-    expect(fakeClient.calls).toContain('chicken breast');
+
+    it('returns an empty array for a term with no local matches, not an error', async () => {
+      const res = await request(app.getHttpServer())
+        .get(
+          `/foods/search?q=${encodeURIComponent(`no-such-food-${randomUUID()}`)}`,
+        )
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(200);
+
+      expect(res.body).toEqual([]);
+    });
   });
 
   it('rejects a nutrients lookup without a valid access token', async () => {
@@ -113,6 +149,7 @@ describe('Nutrition search (e2e, real Adapter over a faked network client)', () 
       proteinG: 61.2,
       carbsG: 0,
       fatG: 7.13,
+      saturatedFatG: 2.03,
       sugarG: 2.5,
       sodiumMg: 122.4,
     });

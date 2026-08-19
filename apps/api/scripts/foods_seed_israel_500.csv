@@ -1,0 +1,501 @@
+name,company,category,calories,protein_g,carbs_g,fat_g,saturated_fat_g,sugar_g,sodium_mg,base_unit,default_serving_weight_grams
+"Chicken Breast, cooked",Tnuva,Meat,165.0,31.0,0.0,3.6,1.0,0.0,74.0,100g,150.0
+"Turkey Breast, cooked",Tirat Zvi,Meat,135.0,29.0,1.0,1.5,0.5,0.0,50.0,100g,100.0
+"Beef Kebab, cooked",Tirat Zvi,Meat,250.0,18.0,4.0,18.0,7.0,1.0,450.0,100g,100.0
+"Chicken Schnitzel, cooked",Mama Of,Meat,240.0,15.0,20.0,11.0,2.5,1.0,350.0,100g,100.0
+Canned Tuna in Water,Starkist,Meat,115.0,26.0,0.0,1.0,0.2,0.0,350.0,100g,112.0
+Canned Tuna in Oil,Starkist,Meat,190.0,24.0,0.0,10.0,1.5,0.0,350.0,100g,112.0
+"Ground Beef 5% Fat, cooked",Tnuva,Meat,137.0,21.0,0.0,5.0,2.0,0.0,65.0,100g,150.0
+"Ground Beef 15% Fat, cooked",Tnuva,Meat,212.0,19.0,0.0,15.0,6.0,0.0,70.0,100g,150.0
+"Salmon Fillet, cooked",Tnuva,Meat,206.0,22.0,0.0,13.0,3.0,0.0,60.0,100g,150.0
+Pastrami Barbecue,Soglowek,Meat,110.0,18.0,3.0,2.5,1.0,1.0,800.0,100g,50.0
+"Ptitim, cooked",Osem,Grains,150.0,4.5,28.0,2.0,0.5,1.0,150.0,100g,150.0
+"White Rice, cooked",Sugat,Grains,130.0,2.7,28.0,0.3,0.1,0.1,1.0,100g,150.0
+"Basmati Rice, cooked",Sugat,Grains,121.0,3.5,25.0,0.4,0.1,0.1,1.0,100g,150.0
+"Couscous, cooked",Osem,Grains,112.0,3.8,23.0,0.2,0.1,0.0,5.0,100g,150.0
+"Bulgur, cooked",Sugat,Grains,83.0,3.1,18.6,0.2,0.0,0.1,5.0,100g,150.0
+"Pasta, cooked",Osem,Grains,157.0,5.8,30.0,0.9,0.2,0.5,2.0,100g,150.0
+"Quinoa, cooked",Sugat,Grains,120.0,4.4,21.3,1.9,0.2,0.9,7.0,100g,150.0
+Rolled Oats (Raw),Quaker,Grains,379.0,13.0,67.0,6.5,1.2,1.0,5.0,100g,40.0
+"Green Lentils, cooked",Sugat,Grains,116.0,9.0,20.0,0.4,0.1,1.8,2.0,100g,150.0
+"Chickpeas, cooked",Sugat,Grains,164.0,8.8,27.0,2.5,0.2,4.8,7.0,100g,150.0
+White Bread,Angel,Grains,240.0,8.0,48.0,2.0,0.5,3.0,400.0,100g,35.0
+Whole Wheat Bread,Berman,Grains,220.0,9.5,41.0,2.5,0.6,2.0,380.0,100g,35.0
+Rice Cakes,B&D,Grains,385.0,8.0,80.0,3.0,0.8,0.5,350.0,100g,10.0
+Cottage Cheese 5%,Tnuva,Dairy,95.0,10.0,1.5,5.0,3.0,1.5,300.0,100g,250.0
+Cottage Cheese 9%,Tara,Dairy,120.0,9.0,1.5,9.0,5.5,1.5,300.0,100g,250.0
+White Cheese 5%,Strauss,Dairy,97.0,9.5,3.5,5.0,3.0,3.5,240.0,100g,250.0
+Pro Yogurt 20g,Tnuva,Dairy,60.0,10.0,4.0,0.0,0.0,4.0,45.0,100g,200.0
+Pro Yogurt 20g,Tara,Dairy,62.0,10.0,3.8,0.0,0.0,3.8,40.0,100g,200.0
+Danone PRO,Strauss,Dairy,58.0,10.0,3.5,0.0,0.0,3.5,40.0,100g,200.0
+Milk 3%,Yotvata,Dairy,59.0,3.3,4.7,3.0,1.8,4.7,40.0,100ml,200.0
+Milk 1%,Yotvata,Dairy,43.0,3.4,4.9,1.0,0.6,4.9,42.0,100ml,200.0
+Soy Milk (Unsweetened),Tnuva,Dairy,39.0,3.3,1.8,2.1,0.4,1.0,45.0,100ml,200.0
+Yellow Cheese Emek 28%,Tnuva,Dairy,343.0,25.0,0.1,28.0,17.0,0.0,700.0,100g,28.0
+Yellow Cheese Noam 9%,Tara,Dairy,206.0,31.0,1.0,9.0,5.5,0.0,750.0,100g,28.0
+Feta Cheese 16%,Gad,Dairy,224.0,14.0,2.0,16.0,10.0,1.0,1100.0,100g,50.0
+Bamba,Osem,Snacks,534.0,17.0,39.0,33.0,5.0,2.5,400.0,100g,25.0
+Bissli Grill,Osem,Snacks,490.0,10.0,58.0,24.0,11.0,2.0,800.0,100g,35.0
+Doritos Nacho,Elite,Snacks,498.0,7.5,60.0,25.0,11.0,2.5,550.0,100g,40.0
+Tapuchips,Elite,Snacks,541.0,5.0,52.0,35.0,15.0,0.5,500.0,100g,50.0
+Apropo,Osem,Snacks,536.0,5.0,56.0,32.0,3.5,1.5,600.0,100g,50.0
+Milky Chocolate,Strauss,Snacks,138.0,2.8,17.0,6.5,4.0,14.0,50.0,100g,133.0
+Pesek Zman,Elite,Snacks,518.0,6.5,55.0,30.0,14.0,48.0,90.0,100g,45.0
+Tortit,Elite,Snacks,523.0,5.5,58.0,29.0,13.0,45.0,75.0,100g,40.0
+Raw Tahini,Achva,Fats,694.0,24.0,12.0,60.0,10.0,1.0,10.0,100g,15.0
+Hummus,Achla,Spreads,280.0,6.5,14.0,22.0,3.0,0.0,400.0,100g,30.0
+Hummus Classic,Shamir,Spreads,295.0,6.0,15.0,23.0,3.5,0.5,410.0,100g,30.0
+Peanut Butter,Skippy,Spreads,590.0,25.0,16.0,50.0,8.0,9.0,430.0,100g,32.0
+Natural Peanut Butter,B&D,Spreads,610.0,28.0,14.0,52.0,7.0,4.0,15.0,100g,32.0
+Olive Oil,Yitzhar,Fats,828.0,0.0,0.0,92.0,14.0,0.0,0.0,100ml,15.0
+Butter,Tnuva,Fats,730.0,0.5,0.7,81.0,52.0,0.7,10.0,100g,10.0
+Almonds (Raw),Shkediya,Fats,598.0,21.0,21.0,50.0,3.8,4.9,1.0,100g,20.0
+Walnuts,Shkediya,Fats,654.0,15.0,13.0,65.0,6.1,2.6,2.0,100g,20.0
+Mass Gainer,Super Effect,Supplements,380.0,20.0,70.0,2.5,1.0,15.0,150.0,100g,300.0
+Whey Protein Isolate,Allin,Supplements,360.0,85.0,2.0,1.0,0.5,1.0,120.0,100g,33.0
+Protein Bar Chocolate,Allin,Snacks,350.0,35.0,25.0,12.0,6.0,2.0,200.0,100g,60.0
+Whey Protein,Super Effect,Supplements,395.0,75.0,9.0,6.0,2.5,4.0,180.0,100g,33.0
+Ketchup,Osem,Spreads,114.0,1.5,27.0,0.0,0.0,23.0,850.0,100g,15.0
+Mayonnaise,Telma,Spreads,718.0,1.0,3.5,78.0,12.0,2.5,400.0,100g,15.0
+Tomato Paste,Mutti,Vegetables,82.0,4.2,14.0,0.2,0.1,11.0,130.0,100g,50.0
+Eggs (Size L),Tnuva,Protein,143.0,12.5,0.7,9.7,3.1,0.3,142.0,100g,60.0
+Avocado,Carmel,Fats,160.0,2.0,8.5,14.6,2.1,0.6,7.0,100g,100.0
+Banana,Carmel,Fruits,89.0,1.0,22.8,0.3,0.1,12.2,1.0,100g,118.0
+Apple,Bereshit,Fruits,52.0,0.2,13.8,0.1,0.0,10.3,1.0,100g,150.0
+Cucumber,Carmel,Vegetables,15.0,0.6,3.6,0.1,0.0,1.6,2.0,100g,100.0
+Tomato,Carmel,Vegetables,18.0,0.8,3.9,0.2,0.0,2.6,5.0,100g,100.0
+Baguette Variation 65,Shamir,Grains,298.7,10.9,56.7,1.4,0.3,2.3,656.3,100g,50.0
+Watermelon Variation 66,Tara,Fruits,30.6,0.6,7.7,0.2,0.0,6.3,1.0,100g,150.0
+Baguette Variation 67,Quaker,Grains,255.1,9.3,48.4,1.2,0.3,2.0,560.6,100g,50.0
+Watermelon Variation 68,Achla,Fruits,32.2,0.6,8.2,0.2,0.0,6.7,1.1,100g,150.0
+Greek Yogurt 0% Variation 69,Tara,Dairy,61.5,10.7,4.2,0.0,0.0,3.3,37.5,100g,150.0
+Flaxseeds Variation 70,Yitzhar,Fats,584.2,20.0,31.6,46.2,4.0,1.6,32.8,100g,15.0
+Bell Pepper (Red) Variation 71,Mama Of,Vegetables,27.9,0.9,5.4,0.3,0.0,3.8,3.6,100g,100.0
+Protein Water Variation 72,Yitzhar,Beverages,20.5,4.6,0.0,0.0,0.0,0.0,10.2,100ml,330.0
+Apple Juice Variation 73,Shkediya,Beverages,41.5,0.1,10.2,0.1,0.0,8.7,3.6,100ml,200.0
+Orange Juice Variation 74,B&D,Beverages,45.2,0.7,10.5,0.2,0.0,8.4,1.0,100ml,200.0
+Grapes Variation 75,Telma,Fruits,75.5,0.8,19.8,0.2,0.1,17.0,2.2,100g,100.0
+"Sweet Potato, cooked Variation 76",Angel,Vegetables,92.1,2.0,21.2,0.1,0.0,6.7,36.9,100g,150.0
+Bell Pepper (Red) Variation 77,Mutti,Vegetables,34.0,1.1,6.6,0.3,0.0,4.6,4.4,100g,100.0
+Orange Juice Variation 78,Elite,Beverages,48.2,0.8,11.1,0.2,0.0,9.0,1.1,100ml,200.0
+Baguette Variation 79,Yitzhar,Grains,271.3,9.9,51.5,1.3,0.3,2.1,596.0,100g,50.0
+"Kidney Beans, cooked Variation 80",Sugat,Grains,138.2,9.5,24.8,0.5,0.1,0.3,2.2,100g,150.0
+"Broccoli, cooked Variation 81",Strauss,Vegetables,34.2,2.3,7.0,0.4,0.1,1.4,40.1,100g,100.0
+Apple Juice Variation 82,Yitzhar,Beverages,43.5,0.1,10.7,0.1,0.0,9.1,3.8,100ml,200.0
+Protein Water Variation 83,Angel,Beverages,20.7,4.7,0.0,0.0,0.0,0.0,10.4,100ml,330.0
+Bell Pepper (Red) Variation 84,Tara,Vegetables,28.1,0.9,5.4,0.3,0.0,3.8,3.6,100g,100.0
+"Broccoli, cooked Variation 85",B&D,Vegetables,33.3,2.3,6.9,0.4,0.1,1.3,39.0,100g,100.0
+Pita Bread Variation 86,Sugat,Grains,264.6,8.8,52.9,1.2,0.2,1.3,515.8,100g,100.0
+Oat Milk Variation 87,Shkediya,Dairy,43.4,0.3,6.9,1.5,0.2,3.2,45.4,100ml,200.0
+Flaxseeds Variation 88,Strauss,Fats,563.4,19.3,30.5,44.5,3.9,1.6,31.7,100g,15.0
+"Tofu, firm Variation 89",Achva,Protein,155.4,16.2,3.0,9.4,1.4,0.0,15.1,100g,100.0
+"Broccoli, cooked Variation 90",Berman,Vegetables,33.8,2.3,7.0,0.4,0.1,1.4,39.6,100g,100.0
+"Broccoli, cooked Variation 91",Mutti,Vegetables,35.1,2.4,7.2,0.4,0.1,1.4,41.2,100g,100.0
+Pita Bread Variation 92,Yitzhar,Grains,268.9,8.9,53.8,1.2,0.2,1.3,524.1,100g,100.0
+"Kidney Beans, cooked Variation 93",Angel,Grains,135.3,9.3,24.3,0.5,0.1,0.3,2.1,100g,150.0
+Apple Juice Variation 94,Bereshit,Beverages,44.0,0.1,10.8,0.1,0.0,9.2,3.8,100ml,200.0
+Protein Water Variation 95,Super Effect,Beverages,18.6,4.2,0.0,0.0,0.0,0.0,9.3,100ml,330.0
+"Sweet Potato, cooked Variation 96",Super Effect,Vegetables,82.3,1.8,18.9,0.1,0.0,5.9,32.9,100g,150.0
+Baguette Variation 97,Yotvata,Grains,288.9,10.5,54.8,1.4,0.3,2.2,634.8,100g,50.0
+Bell Pepper (Red) Variation 98,Tara,Vegetables,27.9,0.9,5.4,0.3,0.0,3.8,3.6,100g,100.0
+Watermelon Variation 99,Gad,Fruits,31.2,0.6,7.9,0.2,0.0,6.5,1.0,100g,150.0
+Seitan Variation 100,Elite,Protein,390.1,79.1,14.8,2.0,0.3,0.0,30.6,100g,100.0
+Almond Milk (Unsweetened) Variation 101,Achva,Dairy,12.6,0.4,0.3,1.1,0.1,0.0,65.1,100ml,200.0
+Orange Variation 102,Telma,Fruits,50.4,1.0,12.7,0.1,0.0,10.1,0.0,100g,130.0
+Pita Bread Variation 103,Skippy,Grains,265.7,8.8,53.1,1.2,0.2,1.3,517.9,100g,100.0
+"Potato, cooked Variation 104",Mutti,Vegetables,83.7,1.8,19.3,0.1,0.0,0.9,4.8,100g,150.0
+Soy Sauce Variation 105,Tirat Zvi,Spreads,55.4,8.5,5.1,0.6,0.1,0.4,5745.2,100ml,15.0
+Pita Bread Variation 106,Shkediya,Grains,296.3,9.8,59.3,1.3,0.2,1.4,577.5,100g,100.0
+"Beef Steak, cooked Variation 107",Elite,Meat,231.0,24.0,0.0,13.9,5.5,0.0,46.2,100g,200.0
+"Broccoli, cooked Variation 108",Elite,Vegetables,36.8,2.5,7.6,0.4,0.1,1.5,43.1,100g,100.0
+Apple Juice Variation 109,Mutti,Beverages,48.5,0.1,11.9,0.1,0.0,10.1,4.2,100ml,200.0
+Baguette Variation 110,Soglowek,Grains,275.2,10.0,52.2,1.3,0.3,2.1,604.7,100g,50.0
+"Sweet Potato, cooked Variation 111",Quaker,Vegetables,81.5,1.8,18.7,0.1,0.0,5.9,32.6,100g,150.0
+Carrot Variation 112,Gad,Vegetables,37.2,0.8,8.7,0.2,0.0,4.3,62.5,100g,50.0
+Baguette Variation 113,B&D,Grains,263.8,9.6,50.1,1.3,0.3,2.0,579.6,100g,50.0
+Greek Yogurt 0% Variation 114,Tirat Zvi,Dairy,56.0,9.8,3.8,0.0,0.0,3.0,34.2,100g,150.0
+Carrot Variation 115,Angel,Vegetables,43.1,0.9,10.1,0.2,0.0,4.9,72.5,100g,50.0
+Greek Yogurt 0% Variation 116,Super Effect,Dairy,54.0,9.4,3.7,0.0,0.0,2.9,33.0,100g,150.0
+Cola Variation 117,Gad,Beverages,38.2,0.0,9.9,0.0,0.0,9.9,3.7,100ml,330.0
+"Tofu, firm Variation 118",Achva,Protein,152.9,15.9,3.0,9.2,1.4,0.0,14.9,100g,100.0
+Orange Juice Variation 119,Yitzhar,Beverages,48.3,0.8,11.2,0.2,0.0,9.0,1.1,100ml,200.0
+Protein Water Variation 120,Skippy,Beverages,18.7,4.2,0.0,0.0,0.0,0.0,9.4,100ml,330.0
+Watermelon Variation 121,Quaker,Fruits,27.7,0.6,7.0,0.2,0.0,5.7,0.9,100g,150.0
+Orange Juice Variation 122,Starkist,Beverages,48.7,0.8,11.2,0.2,0.0,9.1,1.1,100ml,200.0
+"Beef Steak, cooked Variation 123",Bereshit,Meat,257.4,26.8,0.0,15.4,6.2,0.0,51.5,100g,200.0
+Orange Juice Variation 124,Shamir,Beverages,43.7,0.7,10.1,0.2,0.0,8.2,1.0,100ml,200.0
+Seitan Variation 125,Starkist,Protein,345.2,70.0,13.1,1.8,0.3,0.0,27.1,100g,100.0
+Cola Variation 126,Yotvata,Beverages,40.9,0.0,10.6,0.0,0.0,10.6,4.0,100ml,330.0
+"Beef Steak, cooked Variation 127",Gad,Meat,238.5,24.8,0.0,14.3,5.7,0.0,47.7,100g,200.0
+Soy Sauce Variation 128,Angel,Spreads,49.5,7.6,4.6,0.6,0.1,0.4,5128.6,100ml,15.0
+Soy Sauce Variation 129,Yotvata,Spreads,52.0,7.9,4.8,0.6,0.1,0.4,5387.4,100ml,15.0
+"Black Beans, cooked Variation 130",Quaker,Grains,144.2,9.7,25.9,0.5,0.1,0.3,1.1,100g,150.0
+Baguette Variation 131,Osem,Grains,285.6,10.4,54.2,1.4,0.3,2.2,627.6,100g,50.0
+Almond Milk (Unsweetened) Variation 132,B&D,Dairy,14.3,0.4,0.3,1.2,0.1,0.0,73.7,100ml,200.0
+Cola Variation 133,B&D,Beverages,44.9,0.0,11.6,0.0,0.0,11.6,4.4,100ml,330.0
+Protein Water Variation 134,Shkediya,Beverages,18.1,4.1,0.0,0.0,0.0,0.0,9.1,100ml,330.0
+"Beef Steak, cooked Variation 135",Tnuva,Meat,237.0,24.6,0.0,14.2,5.7,0.0,47.4,100g,200.0
+"Tofu, firm Variation 136",Yitzhar,Protein,143.7,15.0,2.8,8.7,1.3,0.0,14.0,100g,100.0
+Oat Milk Variation 137,Mutti,Dairy,44.5,0.3,7.0,1.6,0.2,3.3,46.5,100ml,200.0
+Watermelon Variation 138,Carmel,Fruits,28.4,0.6,7.2,0.2,0.0,5.9,0.9,100g,150.0
+Oat Milk Variation 139,Carmel,Dairy,42.7,0.3,6.8,1.5,0.2,3.2,44.7,100ml,200.0
+"Tofu, firm Variation 140",Mama Of,Protein,141.1,14.7,2.7,8.5,1.3,0.0,13.7,100g,100.0
+"Potato, cooked Variation 141",Berman,Vegetables,92.8,2.0,21.4,0.1,0.0,1.0,5.3,100g,150.0
+Protein Water Variation 142,Soglowek,Beverages,18.7,4.2,0.0,0.0,0.0,0.0,9.4,100ml,330.0
+Seitan Variation 143,Shamir,Protein,357.1,72.4,13.5,1.8,0.3,0.0,28.0,100g,100.0
+Greek Yogurt 0% Variation 144,Gad,Dairy,61.5,10.7,4.2,0.0,0.0,3.3,37.5,100g,150.0
+Cashews (Raw) Variation 145,Shamir,Fats,569.1,18.7,31.1,45.1,8.0,6.1,12.3,100g,20.0
+Pecans Variation 146,Yotvata,Fats,717.4,9.6,14.4,74.7,6.4,4.2,0.0,100g,20.0
+Baguette Variation 147,Strauss,Grains,292.5,10.7,55.5,1.4,0.3,2.2,642.7,100g,50.0
+Watermelon Variation 148,Telma,Fruits,31.4,0.6,8.0,0.2,0.0,6.5,1.0,100g,150.0
+"Kidney Beans, cooked Variation 149",Mutti,Grains,128.1,8.8,23.0,0.5,0.1,0.3,2.0,100g,150.0
+Grapes Variation 150,Elite,Fruits,65.3,0.7,17.1,0.2,0.1,14.7,1.9,100g,100.0
+"Potato, cooked Variation 151",Quaker,Vegetables,95.4,2.1,22.0,0.1,0.0,1.0,5.5,100g,150.0
+Pecans Variation 152,Telma,Fats,657.9,8.8,13.2,68.6,5.9,3.8,0.0,100g,20.0
+"Beef Steak, cooked Variation 153",Berman,Meat,273.3,28.4,0.0,16.4,6.6,0.0,54.7,100g,200.0
+Almond Milk (Unsweetened) Variation 154,Tirat Zvi,Dairy,14.0,0.4,0.3,1.2,0.1,0.0,72.1,100ml,200.0
+Mustard Variation 155,Yotvata,Spreads,63.1,4.2,5.1,3.2,0.2,0.9,1051.4,100g,10.0
+Cashews (Raw) Variation 156,Berman,Fats,591.3,19.5,32.3,46.8,8.3,6.3,12.8,100g,20.0
+Pecans Variation 157,Carmel,Fats,677.8,9.0,13.6,70.6,6.1,3.9,0.0,100g,20.0
+"Beef Steak, cooked Variation 158",Carmel,Meat,267.5,27.8,0.0,16.1,6.4,0.0,53.5,100g,200.0
+"Black Beans, cooked Variation 159",Tara,Grains,139.5,9.4,25.1,0.5,0.1,0.3,1.1,100g,150.0
+Pita Bread Variation 160,Shamir,Grains,279.4,9.2,55.9,1.2,0.2,1.3,544.6,100g,100.0
+"Potato, cooked Variation 161",Bereshit,Vegetables,89.8,2.0,20.8,0.1,0.0,0.9,5.2,100g,150.0
+"Kidney Beans, cooked Variation 162",Allin,Grains,128.2,8.8,23.0,0.5,0.1,0.3,2.0,100g,150.0
+Flaxseeds Variation 163,Elite,Fats,550.2,18.9,29.8,43.5,3.8,1.5,30.9,100g,15.0
+Orange Variation 164,Sugat,Fruits,49.0,0.9,12.3,0.1,0.0,9.8,0.0,100g,130.0
+"Beef Steak, cooked Variation 165",Allin,Meat,241.3,25.1,0.0,14.5,5.8,0.0,48.3,100g,200.0
+Pecans Variation 166,Carmel,Fats,711.7,9.5,14.3,74.2,6.4,4.1,0.0,100g,20.0
+Baguette Variation 167,Elite,Grains,282.6,10.3,53.6,1.3,0.3,2.2,621.0,100g,50.0
+"Beef Steak, cooked Variation 168",Berman,Meat,229.7,23.9,0.0,13.8,5.5,0.0,45.9,100g,200.0
+Cashews (Raw) Variation 169,Shkediya,Fats,527.0,17.3,28.8,41.7,7.4,5.6,11.4,100g,20.0
+"Broccoli, cooked Variation 170",Mama Of,Vegetables,38.4,2.6,7.9,0.4,0.1,1.5,44.9,100g,100.0
+Cashews (Raw) Variation 171,Shkediya,Fats,597.9,19.7,32.7,47.4,8.4,6.4,13.0,100g,20.0
+Cola Variation 172,Osem,Beverages,39.8,0.0,10.3,0.0,0.0,10.3,3.9,100ml,330.0
+"Beef Steak, cooked Variation 173",Telma,Meat,258.4,26.9,0.0,15.5,6.2,0.0,51.7,100g,200.0
+"Beef Steak, cooked Variation 174",Tirat Zvi,Meat,236.5,24.6,0.0,14.2,5.7,0.0,47.3,100g,200.0
+"Potato, cooked Variation 175",Gad,Vegetables,88.3,1.9,20.4,0.1,0.0,0.9,5.1,100g,150.0
+"Black Beans, cooked Variation 176",B&D,Grains,145.1,9.8,26.0,0.5,0.1,0.3,1.1,100g,150.0
+"Broccoli, cooked Variation 177",Yitzhar,Vegetables,37.7,2.6,7.8,0.4,0.1,1.5,44.1,100g,100.0
+Protein Water Variation 178,Yotvata,Beverages,21.8,4.9,0.0,0.0,0.0,0.0,10.9,100ml,330.0
+"Black Beans, cooked Variation 179",Allin,Grains,144.3,9.7,25.9,0.5,0.1,0.3,1.1,100g,150.0
+Seitan Variation 180,Telma,Protein,396.1,80.3,15.0,2.0,0.3,0.0,31.0,100g,100.0
+Chia Seeds Variation 181,Mutti,Fats,463.5,15.7,40.2,29.3,3.1,0.0,15.3,100g,15.0
+Seitan Variation 182,Strauss,Protein,374.2,75.9,14.2,1.9,0.3,0.0,29.3,100g,100.0
+Flaxseeds Variation 183,Quaker,Fats,579.9,19.9,31.4,45.8,4.0,1.6,32.6,100g,15.0
+"Broccoli, cooked Variation 184",Carmel,Vegetables,33.0,2.3,6.8,0.4,0.1,1.3,38.6,100g,100.0
+"Sweet Potato, cooked Variation 185",Shkediya,Vegetables,87.5,1.9,20.1,0.1,0.0,6.3,35.0,100g,150.0
+Cola Variation 186,Achva,Beverages,44.1,0.0,11.4,0.0,0.0,11.4,4.3,100ml,330.0
+"Black Beans, cooked Variation 187",Tara,Grains,137.2,9.3,24.6,0.5,0.1,0.3,1.0,100g,150.0
+Watermelon Variation 188,Shkediya,Fruits,29.2,0.6,7.4,0.2,0.0,6.0,1.0,100g,150.0
+Grapes Variation 189,Mutti,Fruits,67.9,0.7,17.8,0.2,0.1,15.3,2.0,100g,100.0
+"Kidney Beans, cooked Variation 190",Bereshit,Grains,129.8,8.9,23.3,0.5,0.1,0.3,2.0,100g,150.0
+Protein Water Variation 191,Quaker,Beverages,18.0,4.1,0.0,0.0,0.0,0.0,9.0,100ml,330.0
+Greek Yogurt 0% Variation 192,Super Effect,Dairy,55.4,9.7,3.8,0.0,0.0,3.0,33.8,100g,150.0
+Pita Bread Variation 193,Allin,Grains,291.3,9.6,58.3,1.3,0.2,1.4,567.7,100g,100.0
+Bell Pepper (Red) Variation 194,Gad,Vegetables,30.0,1.0,5.8,0.3,0.0,4.1,3.9,100g,100.0
+Protein Water Variation 195,Osem,Beverages,18.4,4.1,0.0,0.0,0.0,0.0,9.2,100ml,330.0
+Mustard Variation 196,Shkediya,Spreads,63.7,4.2,5.1,3.2,0.2,0.9,1062.2,100g,10.0
+Apple Juice Variation 197,Shkediya,Beverages,46.8,0.1,11.5,0.1,0.0,9.8,4.1,100ml,200.0
+Flaxseeds Variation 198,B&D,Fats,484.6,16.6,26.2,38.3,3.4,1.4,27.2,100g,15.0
+Oat Milk Variation 199,Angel,Dairy,41.8,0.3,6.6,1.5,0.2,3.1,43.7,100ml,200.0
+Protein Water Variation 200,Tirat Zvi,Beverages,20.1,4.5,0.0,0.0,0.0,0.0,10.0,100ml,330.0
+Chia Seeds Variation 201,Telma,Fats,458.4,15.6,39.7,29.0,3.1,0.0,15.1,100g,15.0
+Almond Milk (Unsweetened) Variation 202,Starkist,Dairy,11.9,0.4,0.3,1.0,0.1,0.0,61.4,100ml,200.0
+Carrot Variation 203,Shamir,Vegetables,40.3,0.9,9.4,0.2,0.0,4.6,67.8,100g,50.0
+Seitan Variation 204,Mutti,Protein,343.2,69.6,13.0,1.8,0.3,0.0,26.9,100g,100.0
+"Potato, cooked Variation 205",Super Effect,Vegetables,95.2,2.1,22.0,0.1,0.0,1.0,5.5,100g,150.0
+Grapes Variation 206,Gad,Fruits,73.1,0.7,19.2,0.2,0.1,16.4,2.1,100g,100.0
+Cashews (Raw) Variation 207,Telma,Fats,580.0,19.1,31.7,45.9,8.2,6.2,12.6,100g,20.0
+Apple Juice Variation 208,Tirat Zvi,Beverages,43.1,0.1,10.6,0.1,0.0,9.0,3.7,100ml,200.0
+Mustard Variation 209,Yotvata,Spreads,68.5,4.6,5.5,3.4,0.2,0.9,1141.5,100g,10.0
+"Beef Steak, cooked Variation 210",Quaker,Meat,270.8,28.2,0.0,16.2,6.5,0.0,54.2,100g,200.0
+"Sweet Potato, cooked Variation 211",Osem,Vegetables,85.3,1.9,19.6,0.1,0.0,6.2,34.1,100g,150.0
+Flaxseeds Variation 212,Berman,Fats,500.1,17.1,27.1,39.5,3.5,1.4,28.1,100g,15.0
+Carrot Variation 213,Yitzhar,Vegetables,42.1,0.9,9.9,0.2,0.0,4.8,70.9,100g,50.0
+Baguette Variation 214,Tirat Zvi,Grains,280.1,10.2,53.2,1.3,0.3,2.1,615.5,100g,50.0
+Mustard Variation 215,Elite,Spreads,62.7,4.2,5.0,3.1,0.2,0.9,1044.5,100g,10.0
+"Potato, cooked Variation 216",Gad,Vegetables,91.5,2.0,21.1,0.1,0.0,0.9,5.3,100g,150.0
+Orange Juice Variation 217,Allin,Beverages,41.3,0.6,9.6,0.2,0.0,7.7,0.9,100ml,200.0
+"Sweet Potato, cooked Variation 218",B&D,Vegetables,86.6,1.9,19.9,0.1,0.0,6.3,34.6,100g,150.0
+Pecans Variation 219,Tirat Zvi,Fats,687.4,9.2,13.8,71.6,6.2,4.0,0.0,100g,20.0
+Apple Juice Variation 220,Quaker,Beverages,45.9,0.1,11.3,0.1,0.0,9.6,4.0,100ml,200.0
+Baguette Variation 221,Sugat,Grains,256.1,9.3,48.6,1.2,0.3,2.0,562.7,100g,50.0
+Almond Milk (Unsweetened) Variation 222,Mutti,Dairy,11.8,0.4,0.3,1.0,0.1,0.0,60.9,100ml,200.0
+Flaxseeds Variation 223,Tirat Zvi,Fats,575.3,19.7,31.1,45.5,4.0,1.6,32.3,100g,15.0
+Pecans Variation 224,Achva,Fats,708.4,9.4,14.2,73.8,6.4,4.1,0.0,100g,20.0
+Apple Juice Variation 225,Tnuva,Beverages,46.4,0.1,11.4,0.1,0.0,9.7,4.0,100ml,200.0
+Carrot Variation 226,Sugat,Vegetables,41.9,0.9,9.8,0.2,0.0,4.8,70.6,100g,50.0
+"Potato, cooked Variation 227",Mutti,Vegetables,94.7,2.1,21.9,0.1,0.0,1.0,5.4,100g,150.0
+Protein Water Variation 228,Soglowek,Beverages,21.2,4.8,0.0,0.0,0.0,0.0,10.6,100ml,330.0
+Bell Pepper (Red) Variation 229,Strauss,Vegetables,31.5,1.0,6.1,0.3,0.0,4.3,4.1,100g,100.0
+"Beef Steak, cooked Variation 230",Tnuva,Meat,265.6,27.6,0.0,15.9,6.4,0.0,53.1,100g,200.0
+Watermelon Variation 231,Tirat Zvi,Fruits,30.8,0.6,7.8,0.2,0.0,6.4,1.0,100g,150.0
+"Beef Steak, cooked Variation 232",Tnuva,Meat,257.6,26.8,0.0,15.5,6.2,0.0,51.5,100g,200.0
+Watermelon Variation 233,Skippy,Fruits,28.6,0.6,7.3,0.2,0.0,5.9,1.0,100g,150.0
+Bell Pepper (Red) Variation 234,Allin,Vegetables,28.0,0.9,5.4,0.3,0.0,3.8,3.6,100g,100.0
+Cashews (Raw) Variation 235,Strauss,Fats,573.2,18.9,31.3,45.4,8.1,6.1,12.4,100g,20.0
+"Black Beans, cooked Variation 236",Quaker,Grains,127.2,8.6,22.8,0.5,0.1,0.3,1.0,100g,150.0
+Apple Juice Variation 237,Achva,Beverages,41.6,0.1,10.2,0.1,0.0,8.7,3.6,100ml,200.0
+"Tofu, firm Variation 238",Gad,Protein,137.7,14.3,2.7,8.3,1.2,0.0,13.4,100g,100.0
+Greek Yogurt 0% Variation 239,Quaker,Dairy,61.3,10.7,4.2,0.0,0.0,3.3,37.4,100g,150.0
+Carrot Variation 240,Achla,Vegetables,44.1,1.0,10.3,0.2,0.0,5.1,74.2,100g,50.0
+Greek Yogurt 0% Variation 241,Bereshit,Dairy,62.6,10.9,4.2,0.0,0.0,3.4,38.2,100g,150.0
+Orange Juice Variation 242,Sugat,Beverages,42.1,0.7,9.7,0.2,0.0,7.9,0.9,100ml,200.0
+Orange Variation 243,Carmel,Fruits,49.9,1.0,12.5,0.1,0.0,10.0,0.0,100g,130.0
+"Black Beans, cooked Variation 244",Elite,Grains,129.7,8.7,23.3,0.5,0.1,0.3,1.0,100g,150.0
+"Kidney Beans, cooked Variation 245",B&D,Grains,134.0,9.2,24.1,0.5,0.1,0.3,2.1,100g,150.0
+Soy Sauce Variation 246,Mutti,Spreads,57.6,8.8,5.3,0.7,0.1,0.4,5966.2,100ml,15.0
+Almond Milk (Unsweetened) Variation 247,Skippy,Dairy,12.8,0.4,0.3,1.1,0.1,0.0,66.0,100ml,200.0
+Carrot Variation 248,Mutti,Vegetables,43.1,0.9,10.1,0.2,0.0,4.9,72.5,100g,50.0
+Orange Variation 249,B&D,Fruits,47.3,0.9,11.9,0.1,0.0,9.5,0.0,100g,130.0
+Pecans Variation 250,Berman,Fats,675.7,9.0,13.6,70.4,6.1,3.9,0.0,100g,20.0
+Carrot Variation 251,Soglowek,Vegetables,37.7,0.8,8.8,0.2,0.0,4.3,63.5,100g,50.0
+Greek Yogurt 0% Variation 252,Skippy,Dairy,64.4,11.2,4.4,0.0,0.0,3.5,39.3,100g,150.0
+Cashews (Raw) Variation 253,Skippy,Fats,537.0,17.7,29.3,42.5,7.6,5.7,11.7,100g,20.0
+Protein Water Variation 254,Allin,Beverages,20.7,4.7,0.0,0.0,0.0,0.0,10.4,100ml,330.0
+Pecans Variation 255,Gad,Fats,690.0,9.2,13.9,71.9,6.2,4.0,0.0,100g,20.0
+"Potato, cooked Variation 256",Yitzhar,Vegetables,79.9,1.7,18.5,0.1,0.0,0.8,4.6,100g,150.0
+Bell Pepper (Red) Variation 257,Bereshit,Vegetables,31.3,1.0,6.1,0.3,0.0,4.2,4.0,100g,100.0
+Chia Seeds Variation 258,Sugat,Fats,529.4,18.0,45.9,33.4,3.6,0.0,17.4,100g,15.0
+"Potato, cooked Variation 259",Bereshit,Vegetables,80.3,1.8,18.5,0.1,0.0,0.8,4.6,100g,150.0
+Chia Seeds Variation 260,Achva,Fats,532.1,18.1,46.1,33.6,3.6,0.0,17.5,100g,15.0
+"Broccoli, cooked Variation 261",Quaker,Vegetables,34.6,2.4,7.1,0.4,0.1,1.4,40.5,100g,100.0
+Mustard Variation 262,Achla,Spreads,68.7,4.6,5.5,3.4,0.2,0.9,1145.3,100g,10.0
+"Sweet Potato, cooked Variation 263",Skippy,Vegetables,93.4,2.1,21.5,0.1,0.0,6.7,37.4,100g,150.0
+Apple Juice Variation 264,Skippy,Beverages,49.4,0.1,12.1,0.1,0.0,10.3,4.3,100ml,200.0
+Oat Milk Variation 265,Starkist,Dairy,42.4,0.3,6.7,1.5,0.2,3.2,44.3,100ml,200.0
+Pita Bread Variation 266,Achva,Grains,269.3,8.9,53.9,1.2,0.2,1.3,524.9,100g,100.0
+Cola Variation 267,Quaker,Beverages,38.1,0.0,9.9,0.0,0.0,9.9,3.7,100ml,330.0
+Almond Milk (Unsweetened) Variation 268,Mama Of,Dairy,14.3,0.4,0.3,1.2,0.1,0.0,73.5,100ml,200.0
+"Potato, cooked Variation 269",Super Effect,Vegetables,84.7,1.9,19.6,0.1,0.0,0.9,4.9,100g,150.0
+Pecans Variation 270,B&D,Fats,752.8,10.0,15.1,78.4,6.8,4.4,0.0,100g,20.0
+Orange Juice Variation 271,Super Effect,Beverages,47.3,0.7,10.9,0.2,0.0,8.8,1.1,100ml,200.0
+Oat Milk Variation 272,Telma,Dairy,39.4,0.3,6.2,1.4,0.2,2.9,41.3,100ml,200.0
+Bell Pepper (Red) Variation 273,Shkediya,Vegetables,32.3,1.0,6.2,0.3,0.0,4.4,4.2,100g,100.0
+Grapes Variation 274,Quaker,Fruits,66.7,0.7,17.5,0.2,0.1,15.0,1.9,100g,100.0
+Seitan Variation 275,Super Effect,Protein,333.8,67.7,12.6,1.7,0.3,0.0,26.2,100g,100.0
+Protein Water Variation 276,Quaker,Beverages,21.0,4.7,0.0,0.0,0.0,0.0,10.5,100ml,330.0
+Pita Bread Variation 277,Yotvata,Grains,288.4,9.5,57.7,1.3,0.2,1.4,562.2,100g,100.0
+Seitan Variation 278,Super Effect,Protein,350.6,71.1,13.3,1.8,0.3,0.0,27.5,100g,100.0
+Orange Juice Variation 279,Telma,Beverages,43.1,0.7,10.0,0.2,0.0,8.0,1.0,100ml,200.0
+Soy Sauce Variation 280,Tnuva,Spreads,50.1,7.7,4.6,0.6,0.1,0.4,5189.3,100ml,15.0
+Oat Milk Variation 281,Quaker,Dairy,38.8,0.3,6.1,1.4,0.2,2.9,40.6,100ml,200.0
+Carrot Variation 282,Angel,Vegetables,44.2,1.0,10.4,0.2,0.0,5.1,74.4,100g,50.0
+Flaxseeds Variation 283,Yitzhar,Fats,586.6,20.1,31.7,46.4,4.1,1.6,33.0,100g,15.0
+Almond Milk (Unsweetened) Variation 284,Sugat,Dairy,13.1,0.4,0.3,1.1,0.1,0.0,67.7,100ml,200.0
+Pecans Variation 285,Bereshit,Fats,694.2,9.2,14.0,72.3,6.2,4.0,0.0,100g,20.0
+Orange Variation 286,B&D,Fruits,48.8,0.9,12.3,0.1,0.0,9.8,0.0,100g,130.0
+"Beef Steak, cooked Variation 287",Yitzhar,Meat,259.8,27.0,0.0,15.6,6.2,0.0,52.0,100g,200.0
+Seitan Variation 288,Berman,Protein,387.5,78.6,14.7,2.0,0.3,0.0,30.4,100g,100.0
+Watermelon Variation 289,Skippy,Fruits,32.8,0.7,8.3,0.2,0.0,6.8,1.1,100g,150.0
+"Potato, cooked Variation 290",Tara,Vegetables,85.2,1.9,19.7,0.1,0.0,0.9,4.9,100g,150.0
+Soy Sauce Variation 291,Telma,Spreads,51.3,7.8,4.7,0.6,0.1,0.4,5312.5,100ml,15.0
+Apple Juice Variation 292,Telma,Beverages,47.4,0.1,11.6,0.1,0.0,9.9,4.1,100ml,200.0
+Pita Bread Variation 293,Quaker,Grains,260.1,8.6,52.0,1.1,0.2,1.2,507.0,100g,100.0
+Protein Water Variation 294,Telma,Beverages,19.4,4.4,0.0,0.0,0.0,0.0,9.7,100ml,330.0
+Greek Yogurt 0% Variation 295,Soglowek,Dairy,61.3,10.7,4.2,0.0,0.0,3.3,37.4,100g,150.0
+"Black Beans, cooked Variation 296",Yotvata,Grains,127.0,8.6,22.8,0.5,0.1,0.3,1.0,100g,150.0
+Pecans Variation 297,Super Effect,Fats,716.5,9.5,14.4,74.7,6.4,4.1,0.0,100g,20.0
+Carrot Variation 298,Allin,Vegetables,37.5,0.8,8.8,0.2,0.0,4.3,63.2,100g,50.0
+Oat Milk Variation 299,Strauss,Dairy,42.3,0.3,6.7,1.5,0.2,3.1,44.2,100ml,200.0
+Almond Milk (Unsweetened) Variation 300,Angel,Dairy,14.1,0.4,0.3,1.2,0.1,0.0,72.6,100ml,200.0
+Grapes Variation 301,Carmel,Fruits,74.2,0.8,19.5,0.2,0.1,16.7,2.2,100g,100.0
+Cola Variation 302,Super Effect,Beverages,38.3,0.0,9.9,0.0,0.0,9.9,3.7,100ml,330.0
+Soy Sauce Variation 303,Tnuva,Spreads,55.9,8.5,5.2,0.6,0.1,0.4,5798.0,100ml,15.0
+"Kidney Beans, cooked Variation 304",Angel,Grains,118.1,8.1,21.2,0.5,0.1,0.3,1.9,100g,150.0
+Chia Seeds Variation 305,Quaker,Fats,474.4,16.1,41.1,30.0,3.2,0.0,15.6,100g,15.0
+Flaxseeds Variation 306,Soglowek,Fats,570.5,19.6,30.9,45.1,4.0,1.6,32.1,100g,15.0
+Carrot Variation 307,Tnuva,Vegetables,40.7,0.9,9.5,0.2,0.0,4.7,68.6,100g,50.0
+Seitan Variation 308,Tnuva,Protein,334.0,67.7,12.6,1.7,0.3,0.0,26.2,100g,100.0
+Mustard Variation 309,Mama Of,Spreads,68.5,4.6,5.5,3.4,0.2,0.9,1142.2,100g,10.0
+Almond Milk (Unsweetened) Variation 310,Tirat Zvi,Dairy,14.3,0.4,0.3,1.2,0.1,0.0,73.7,100ml,200.0
+Chia Seeds Variation 311,Mutti,Fats,512.1,17.4,44.4,32.4,3.5,0.0,16.9,100g,15.0
+Almond Milk (Unsweetened) Variation 312,Achva,Dairy,13.9,0.4,0.3,1.2,0.1,0.0,71.7,100ml,200.0
+"Black Beans, cooked Variation 313",Yitzhar,Grains,130.7,8.8,23.5,0.5,0.1,0.3,1.0,100g,150.0
+"Broccoli, cooked Variation 314",Tnuva,Vegetables,38.2,2.6,7.9,0.4,0.1,1.5,44.7,100g,100.0
+Carrot Variation 315,Sugat,Vegetables,38.8,0.9,9.1,0.2,0.0,4.4,65.3,100g,50.0
+"Black Beans, cooked Variation 316",Tara,Grains,135.1,9.1,24.3,0.5,0.1,0.3,1.0,100g,150.0
+Protein Water Variation 317,Tara,Beverages,18.1,4.1,0.0,0.0,0.0,0.0,9.0,100ml,330.0
+Apple Juice Variation 318,Osem,Beverages,45.8,0.1,11.2,0.1,0.0,9.6,4.0,100ml,200.0
+Seitan Variation 319,Soglowek,Protein,355.8,72.1,13.5,1.8,0.3,0.0,27.9,100g,100.0
+"Beef Steak, cooked Variation 320",Shkediya,Meat,273.4,28.4,0.0,16.4,6.6,0.0,54.7,100g,200.0
+Cola Variation 321,Bereshit,Beverages,41.7,0.0,10.8,0.0,0.0,10.8,4.1,100ml,330.0
+"Sweet Potato, cooked Variation 322",Mutti,Vegetables,94.6,2.1,21.8,0.1,0.0,6.8,37.8,100g,150.0
+Chia Seeds Variation 323,Allin,Fats,505.8,17.2,43.8,32.0,3.4,0.0,16.7,100g,15.0
+Cashews (Raw) Variation 324,Starkist,Fats,512.8,16.9,28.0,40.6,7.2,5.5,11.1,100g,20.0
+Protein Water Variation 325,Osem,Beverages,19.4,4.4,0.0,0.0,0.0,0.0,9.7,100ml,330.0
+"Tofu, firm Variation 326",Strauss,Protein,140.9,14.7,2.7,8.5,1.3,0.0,13.7,100g,100.0
+Cola Variation 327,Gad,Beverages,44.3,0.0,11.5,0.0,0.0,11.5,4.3,100ml,330.0
+Pecans Variation 328,Bereshit,Fats,692.9,9.2,13.9,72.2,6.2,4.0,0.0,100g,20.0
+Soy Sauce Variation 329,Angel,Spreads,51.9,7.9,4.8,0.6,0.1,0.4,5379.3,100ml,15.0
+Mustard Variation 330,Achva,Spreads,70.8,4.7,5.7,3.5,0.2,1.0,1179.7,100g,10.0
+Almond Milk (Unsweetened) Variation 331,Sugat,Dairy,12.9,0.4,0.3,1.1,0.1,0.0,66.5,100ml,200.0
+"Black Beans, cooked Variation 332",Achva,Grains,139.1,9.4,25.0,0.5,0.1,0.3,1.1,100g,150.0
+Pecans Variation 333,Carmel,Fats,628.2,8.4,12.6,65.5,5.6,3.6,0.0,100g,20.0
+Oat Milk Variation 334,Yitzhar,Dairy,41.7,0.3,6.6,1.5,0.2,3.1,43.6,100ml,200.0
+Watermelon Variation 335,Achla,Fruits,28.4,0.6,7.2,0.2,0.0,5.9,0.9,100g,150.0
+Cashews (Raw) Variation 336,Angel,Fats,512.0,16.8,28.0,40.5,7.2,5.5,11.1,100g,20.0
+Mustard Variation 337,Berman,Spreads,61.4,4.1,4.9,3.1,0.2,0.8,1023.4,100g,10.0
+Flaxseeds Variation 338,Berman,Fats,549.0,18.8,29.7,43.4,3.8,1.5,30.8,100g,15.0
+Pita Bread Variation 339,Sugat,Grains,266.5,8.8,53.3,1.2,0.2,1.3,519.5,100g,100.0
+Seitan Variation 340,Elite,Protein,371.1,75.2,14.0,1.9,0.3,0.0,29.1,100g,100.0
+"Kidney Beans, cooked Variation 341",Quaker,Grains,120.0,8.2,21.5,0.5,0.1,0.3,1.9,100g,150.0
+Chia Seeds Variation 342,Tirat Zvi,Fats,470.9,16.0,40.8,29.7,3.2,0.0,15.5,100g,15.0
+Grapes Variation 343,Shkediya,Fruits,63.3,0.6,16.6,0.2,0.1,14.2,1.8,100g,100.0
+"Beef Steak, cooked Variation 344",Tirat Zvi,Meat,248.0,25.8,0.0,14.9,6.0,0.0,49.6,100g,200.0
+Apple Juice Variation 345,Allin,Beverages,44.8,0.1,11.0,0.1,0.0,9.3,3.9,100ml,200.0
+"Broccoli, cooked Variation 346",Quaker,Vegetables,36.3,2.5,7.5,0.4,0.1,1.5,42.6,100g,100.0
+Orange Variation 347,Quaker,Fruits,49.8,1.0,12.5,0.1,0.0,10.0,0.0,100g,130.0
+Orange Juice Variation 348,Shkediya,Beverages,41.2,0.6,9.5,0.2,0.0,7.7,0.9,100ml,200.0
+Watermelon Variation 349,Berman,Fruits,27.4,0.5,6.9,0.2,0.0,5.7,0.9,100g,150.0
+Apple Juice Variation 350,Sugat,Beverages,48.8,0.1,12.0,0.1,0.0,10.2,4.2,100ml,200.0
+"Black Beans, cooked Variation 351",Elite,Grains,123.7,8.3,22.2,0.5,0.1,0.3,0.9,100g,150.0
+"Sweet Potato, cooked Variation 352",Angel,Vegetables,87.7,1.9,20.2,0.1,0.0,6.3,35.1,100g,150.0
+Flaxseeds Variation 353,Allin,Fats,546.6,18.7,29.6,43.2,3.8,1.5,30.7,100g,15.0
+Mustard Variation 354,Allin,Spreads,65.5,4.4,5.3,3.3,0.2,0.9,1091.8,100g,10.0
+Carrot Variation 355,Quaker,Vegetables,37.2,0.8,8.7,0.2,0.0,4.3,62.6,100g,50.0
+Soy Sauce Variation 356,Gad,Spreads,55.3,8.4,5.1,0.6,0.1,0.4,5727.4,100ml,15.0
+"Sweet Potato, cooked Variation 357",Mutti,Vegetables,90.2,2.0,20.7,0.1,0.0,6.5,36.1,100g,150.0
+"Sweet Potato, cooked Variation 358",Telma,Vegetables,82.9,1.8,19.1,0.1,0.0,6.0,33.2,100g,150.0
+Apple Juice Variation 359,Mama Of,Beverages,46.3,0.1,11.4,0.1,0.0,9.7,4.0,100ml,200.0
+"Sweet Potato, cooked Variation 360",Bereshit,Vegetables,94.3,2.1,21.7,0.1,0.0,6.8,37.7,100g,150.0
+Protein Water Variation 361,Achva,Beverages,20.3,4.6,0.0,0.0,0.0,0.0,10.1,100ml,330.0
+"Black Beans, cooked Variation 362",Starkist,Grains,121.2,8.2,21.8,0.5,0.1,0.3,0.9,100g,150.0
+Bell Pepper (Red) Variation 363,Bereshit,Vegetables,33.4,1.1,6.5,0.3,0.0,4.5,4.3,100g,100.0
+Pecans Variation 364,Bereshit,Fats,715.8,9.5,14.4,74.6,6.4,4.1,0.0,100g,20.0
+Seitan Variation 365,Yotvata,Protein,369.9,75.0,14.0,1.9,0.3,0.0,29.0,100g,100.0
+"Sweet Potato, cooked Variation 366",Sugat,Vegetables,90.7,2.0,20.9,0.1,0.0,6.5,36.3,100g,150.0
+"Tofu, firm Variation 367",Angel,Protein,151.1,15.7,2.9,9.1,1.4,0.0,14.7,100g,100.0
+"Black Beans, cooked Variation 368",Skippy,Grains,122.2,8.2,21.9,0.5,0.1,0.3,0.9,100g,150.0
+Orange Variation 369,Tirat Zvi,Fruits,45.7,0.9,11.5,0.1,0.0,9.1,0.0,100g,130.0
+Apple Juice Variation 370,Osem,Beverages,43.6,0.1,10.7,0.1,0.0,9.1,3.8,100ml,200.0
+Cola Variation 371,Super Effect,Beverages,39.6,0.0,10.2,0.0,0.0,10.2,3.9,100ml,330.0
+Orange Juice Variation 372,Tnuva,Beverages,40.6,0.6,9.4,0.2,0.0,7.6,0.9,100ml,200.0
+Chia Seeds Variation 373,Mama Of,Fats,472.9,16.1,41.0,29.9,3.2,0.0,15.6,100g,15.0
+"Potato, cooked Variation 374",Sugat,Vegetables,93.1,2.0,21.5,0.1,0.0,1.0,5.4,100g,150.0
+Soy Sauce Variation 375,Mutti,Spreads,56.6,8.7,5.2,0.6,0.1,0.4,5869.1,100ml,15.0
+Seitan Variation 376,Gad,Protein,334.3,67.8,12.7,1.7,0.3,0.0,26.2,100g,100.0
+Almond Milk (Unsweetened) Variation 377,Sugat,Dairy,14.3,0.4,0.3,1.2,0.1,0.0,73.7,100ml,200.0
+Oat Milk Variation 378,Osem,Dairy,43.7,0.3,6.9,1.5,0.2,3.2,45.7,100ml,200.0
+Watermelon Variation 379,Sugat,Fruits,27.0,0.5,6.8,0.2,0.0,5.6,0.9,100g,150.0
+Flaxseeds Variation 380,B&D,Fats,533.0,18.3,28.8,42.1,3.7,1.5,29.9,100g,15.0
+Oat Milk Variation 381,Gad,Dairy,45.8,0.3,7.2,1.6,0.2,3.4,47.9,100ml,200.0
+"Tofu, firm Variation 382",Angel,Protein,145.0,15.1,2.8,8.8,1.3,0.0,14.1,100g,100.0
+Apple Juice Variation 383,Gad,Beverages,49.1,0.1,12.1,0.1,0.0,10.3,4.3,100ml,200.0
+Almond Milk (Unsweetened) Variation 384,Mama Of,Dairy,14.2,0.4,0.3,1.2,0.1,0.0,73.3,100ml,200.0
+Greek Yogurt 0% Variation 385,Gad,Dairy,55.5,9.7,3.8,0.0,0.0,3.0,33.8,100g,150.0
+Pecans Variation 386,B&D,Fats,695.1,9.3,14.0,72.4,6.2,4.0,0.0,100g,20.0
+"Beef Steak, cooked Variation 387",Quaker,Meat,263.4,27.4,0.0,15.8,6.3,0.0,52.7,100g,200.0
+Oat Milk Variation 388,Tirat Zvi,Dairy,43.1,0.3,6.8,1.5,0.2,3.2,45.1,100ml,200.0
+Greek Yogurt 0% Variation 389,Super Effect,Dairy,59.4,10.4,4.0,0.0,0.0,3.2,36.2,100g,150.0
+"Beef Steak, cooked Variation 390",Mama Of,Meat,241.8,25.2,0.0,14.5,5.8,0.0,48.4,100g,200.0
+Grapes Variation 391,Tirat Zvi,Fruits,63.0,0.6,16.5,0.2,0.1,14.1,1.8,100g,100.0
+Bell Pepper (Red) Variation 392,Osem,Vegetables,29.9,1.0,5.8,0.3,0.0,4.1,3.9,100g,100.0
+"Tofu, firm Variation 393",Shamir,Protein,136.9,14.3,2.7,8.3,1.2,0.0,13.3,100g,100.0
+Almond Milk (Unsweetened) Variation 394,Yotvata,Dairy,13.7,0.4,0.3,1.2,0.1,0.0,70.5,100ml,200.0
+Watermelon Variation 395,Angel,Fruits,29.8,0.6,7.6,0.2,0.0,6.2,1.0,100g,150.0
+Mustard Variation 396,Elite,Spreads,64.0,4.3,5.1,3.2,0.2,0.9,1066.8,100g,10.0
+"Black Beans, cooked Variation 397",Tirat Zvi,Grains,140.7,9.5,25.3,0.5,0.1,0.3,1.1,100g,150.0
+Bell Pepper (Red) Variation 398,Strauss,Vegetables,28.7,0.9,5.5,0.3,0.0,3.9,3.7,100g,100.0
+Soy Sauce Variation 399,Achla,Spreads,57.6,8.8,5.3,0.7,0.1,0.4,5974.6,100ml,15.0
+Bell Pepper (Red) Variation 400,Elite,Vegetables,28.3,0.9,5.5,0.3,0.0,3.8,3.7,100g,100.0
+Pita Bread Variation 401,Shkediya,Grains,250.1,8.3,50.0,1.1,0.2,1.2,487.6,100g,100.0
+Pita Bread Variation 402,Achla,Grains,291.2,9.6,58.2,1.3,0.2,1.4,567.7,100g,100.0
+"Broccoli, cooked Variation 403",Telma,Vegetables,32.6,2.2,6.7,0.4,0.1,1.3,38.2,100g,100.0
+Chia Seeds Variation 404,Tirat Zvi,Fats,516.6,17.5,44.7,32.6,3.5,0.0,17.0,100g,15.0
+Cola Variation 405,Allin,Beverages,41.2,0.0,10.6,0.0,0.0,10.6,4.0,100ml,330.0
+Greek Yogurt 0% Variation 406,Bereshit,Dairy,63.5,11.1,4.3,0.0,0.0,3.4,38.7,100g,150.0
+Orange Juice Variation 407,Strauss,Beverages,47.8,0.7,11.1,0.2,0.0,8.9,1.1,100ml,200.0
+Baguette Variation 408,Tara,Grains,267.3,9.8,50.7,1.3,0.3,2.0,587.2,100g,50.0
+Cashews (Raw) Variation 409,Mama Of,Fats,557.4,18.3,30.4,44.1,7.9,5.9,12.1,100g,20.0
+"Sweet Potato, cooked Variation 410",Tnuva,Vegetables,85.2,1.9,19.6,0.1,0.0,6.2,34.1,100g,150.0
+"Beef Steak, cooked Variation 411",Angel,Meat,244.2,25.4,0.0,14.7,5.9,0.0,48.8,100g,200.0
+"Broccoli, cooked Variation 412",Yitzhar,Vegetables,37.8,2.6,7.8,0.4,0.1,1.5,44.3,100g,100.0
+Cashews (Raw) Variation 413,Starkist,Fats,510.6,16.8,27.9,40.4,7.2,5.4,11.1,100g,20.0
+Oat Milk Variation 414,Elite,Dairy,44.1,0.3,7.0,1.5,0.2,3.3,46.1,100ml,200.0
+Pita Bread Variation 415,Achva,Grains,255.2,8.4,51.0,1.1,0.2,1.2,497.3,100g,100.0
+"Sweet Potato, cooked Variation 416",Angel,Vegetables,92.2,2.0,21.2,0.1,0.0,6.7,36.9,100g,150.0
+Pecans Variation 417,Starkist,Fats,701.1,9.3,14.1,73.1,6.3,4.1,0.0,100g,20.0
+Oat Milk Variation 418,Bereshit,Dairy,41.4,0.3,6.5,1.4,0.2,3.1,43.3,100ml,200.0
+Almond Milk (Unsweetened) Variation 419,Soglowek,Dairy,13.6,0.4,0.3,1.2,0.1,0.0,70.3,100ml,200.0
+Greek Yogurt 0% Variation 420,Shkediya,Dairy,61.5,10.7,4.2,0.0,0.0,3.3,37.5,100g,150.0
+Almond Milk (Unsweetened) Variation 421,Soglowek,Dairy,13.7,0.4,0.3,1.2,0.1,0.0,70.4,100ml,200.0
+Flaxseeds Variation 422,Mama Of,Fats,537.9,18.4,29.1,42.5,3.7,1.5,30.2,100g,15.0
+"Sweet Potato, cooked Variation 423",Sugat,Vegetables,89.2,2.0,20.5,0.1,0.0,6.4,35.7,100g,150.0
+Pecans Variation 424,Carmel,Fats,691.3,9.2,13.9,72.0,6.2,4.0,0.0,100g,20.0
+Pita Bread Variation 425,Tirat Zvi,Grains,274.2,9.1,54.8,1.2,0.2,1.3,534.5,100g,100.0
+Greek Yogurt 0% Variation 426,Skippy,Dairy,62.2,10.9,4.2,0.0,0.0,3.4,38.0,100g,150.0
+Cola Variation 427,Gad,Beverages,42.6,0.0,11.0,0.0,0.0,11.0,4.2,100ml,330.0
+Greek Yogurt 0% Variation 428,Quaker,Dairy,56.1,9.8,3.8,0.0,0.0,3.0,34.2,100g,150.0
+Almond Milk (Unsweetened) Variation 429,Shamir,Dairy,12.2,0.4,0.3,1.0,0.1,0.0,62.7,100ml,200.0
+Grapes Variation 430,Tara,Fruits,70.2,0.7,18.4,0.2,0.1,15.8,2.0,100g,100.0
+Pita Bread Variation 431,Mutti,Grains,272.9,9.0,54.6,1.2,0.2,1.3,531.9,100g,100.0
+"Broccoli, cooked Variation 432",Achla,Vegetables,32.6,2.2,6.7,0.4,0.1,1.3,38.2,100g,100.0
+Carrot Variation 433,Tara,Vegetables,41.0,0.9,9.6,0.2,0.0,4.7,69.1,100g,50.0
+Orange Juice Variation 434,Tnuva,Beverages,40.7,0.6,9.4,0.2,0.0,7.6,0.9,100ml,200.0
+Protein Water Variation 435,Achla,Beverages,21.7,4.9,0.0,0.0,0.0,0.0,10.9,100ml,330.0
+Greek Yogurt 0% Variation 436,Berman,Dairy,61.3,10.7,4.2,0.0,0.0,3.3,37.4,100g,150.0
+Soy Sauce Variation 437,Tirat Zvi,Spreads,55.2,8.4,5.1,0.6,0.1,0.4,5720.7,100ml,15.0
+Grapes Variation 438,B&D,Fruits,70.1,0.7,18.4,0.2,0.1,15.7,2.0,100g,100.0
+Apple Juice Variation 439,Yotvata,Beverages,45.3,0.1,11.1,0.1,0.0,9.5,3.9,100ml,200.0
+"Broccoli, cooked Variation 440",Tara,Vegetables,37.4,2.6,7.7,0.4,0.1,1.5,43.8,100g,100.0
+Watermelon Variation 441,Mutti,Fruits,27.7,0.6,7.0,0.2,0.0,5.7,0.9,100g,150.0
+Almond Milk (Unsweetened) Variation 442,Yitzhar,Dairy,12.1,0.4,0.3,1.0,0.1,0.0,62.5,100ml,200.0
+Greek Yogurt 0% Variation 443,Shkediya,Dairy,63.0,11.0,4.3,0.0,0.0,3.4,38.4,100g,150.0
+"Beef Steak, cooked Variation 444",Shkediya,Meat,250.9,26.1,0.0,15.1,6.0,0.0,50.2,100g,200.0
+Pita Bread Variation 445,Angel,Grains,269.4,8.9,53.9,1.2,0.2,1.3,525.2,100g,100.0
+Orange Variation 446,Yitzhar,Fruits,45.5,0.9,11.4,0.1,0.0,9.1,0.0,100g,130.0
+Pecans Variation 447,Bereshit,Fats,622.5,8.3,12.5,64.9,5.6,3.6,0.0,100g,20.0
+Orange Variation 448,Elite,Fruits,46.0,0.9,11.6,0.1,0.0,9.2,0.0,100g,130.0
+Orange Juice Variation 449,Quaker,Beverages,48.8,0.8,11.3,0.2,0.0,9.1,1.1,100ml,200.0
+"Tofu, firm Variation 450",Starkist,Protein,139.6,14.5,2.7,8.4,1.3,0.0,13.6,100g,100.0
+"Tofu, firm Variation 451",Soglowek,Protein,142.6,14.9,2.8,8.6,1.3,0.0,13.9,100g,100.0
+Watermelon Variation 452,Soglowek,Fruits,29.7,0.6,7.5,0.2,0.0,6.1,1.0,100g,150.0
+Cashews (Raw) Variation 453,Shkediya,Fats,517.2,17.0,28.2,41.0,7.3,5.5,11.2,100g,20.0
+Baguette Variation 454,Shamir,Grains,269.6,9.8,51.2,1.3,0.3,2.1,592.2,100g,50.0
+Soy Sauce Variation 455,Tnuva,Spreads,51.5,7.9,4.8,0.6,0.1,0.4,5341.8,100ml,15.0
+Watermelon Variation 456,Shkediya,Fruits,28.3,0.6,7.2,0.2,0.0,5.9,0.9,100g,150.0
+"Kidney Beans, cooked Variation 457",Yitzhar,Grains,127.4,8.7,22.9,0.5,0.1,0.3,2.0,100g,150.0
+"Black Beans, cooked Variation 458",Shamir,Grains,130.9,8.8,23.5,0.5,0.1,0.3,1.0,100g,150.0
+Pecans Variation 459,Shkediya,Fats,740.8,9.9,14.9,77.2,6.6,4.3,0.0,100g,20.0
+Pita Bread Variation 460,B&D,Grains,264.0,8.7,52.8,1.2,0.2,1.2,514.5,100g,100.0
+Carrot Variation 461,Mutti,Vegetables,40.4,0.9,9.5,0.2,0.0,4.6,68.0,100g,50.0
+Soy Sauce Variation 462,Gad,Spreads,51.4,7.9,4.8,0.6,0.1,0.4,5327.5,100ml,15.0
+"Black Beans, cooked Variation 463",Super Effect,Grains,128.8,8.7,23.1,0.5,0.1,0.3,1.0,100g,150.0
+"Potato, cooked Variation 464",Tara,Vegetables,88.5,1.9,20.5,0.1,0.0,0.9,5.1,100g,150.0
+"Beef Steak, cooked Variation 465",Allin,Meat,260.7,27.1,0.0,15.6,6.3,0.0,52.1,100g,200.0
+"Kidney Beans, cooked Variation 466",Osem,Grains,127.9,8.8,23.0,0.5,0.1,0.3,2.0,100g,150.0
+"Black Beans, cooked Variation 467",Strauss,Grains,131.9,8.9,23.7,0.5,0.1,0.3,1.0,100g,150.0
+Cashews (Raw) Variation 468,Sugat,Fats,517.8,17.0,28.3,41.0,7.3,5.5,11.2,100g,20.0
+Mustard Variation 469,Starkist,Spreads,69.3,4.6,5.6,3.5,0.2,0.9,1155.7,100g,10.0
+Grapes Variation 470,Achva,Fruits,74.5,0.8,19.5,0.2,0.1,16.7,2.2,100g,100.0
+"Tofu, firm Variation 471",Telma,Protein,152.7,15.9,3.0,9.2,1.4,0.0,14.8,100g,100.0
+Mustard Variation 472,Telma,Spreads,70.5,4.7,5.7,3.5,0.2,1.0,1174.8,100g,10.0
+Baguette Variation 473,Tara,Grains,248.1,9.1,47.1,1.2,0.3,1.9,545.1,100g,50.0
+Mustard Variation 474,Elite,Spreads,62.5,4.2,5.0,3.1,0.2,0.9,1040.8,100g,10.0
+Cola Variation 475,Tara,Beverages,37.8,0.0,9.8,0.0,0.0,9.8,3.7,100ml,330.0
+"Sweet Potato, cooked Variation 476",Tirat Zvi,Vegetables,84.2,1.9,19.4,0.1,0.0,6.1,33.7,100g,150.0
+"Beef Steak, cooked Variation 477",Telma,Meat,236.9,24.6,0.0,14.2,5.7,0.0,47.4,100g,200.0
+"Tofu, firm Variation 478",Elite,Protein,136.6,14.2,2.7,8.3,1.2,0.0,13.3,100g,100.0
+"Broccoli, cooked Variation 479",Carmel,Vegetables,37.1,2.5,7.6,0.4,0.1,1.5,43.5,100g,100.0
+"Potato, cooked Variation 480",Sugat,Vegetables,94.7,2.1,21.9,0.1,0.0,1.0,5.4,100g,150.0
+Flaxseeds Variation 481,Yitzhar,Fats,524.0,18.0,28.4,41.4,3.6,1.5,29.4,100g,15.0
+Mustard Variation 482,Berman,Spreads,60.5,4.0,4.9,3.0,0.2,0.8,1009.1,100g,10.0
+Grapes Variation 483,Starkist,Fruits,72.3,0.7,19.0,0.2,0.1,16.2,2.1,100g,100.0
+Chia Seeds Variation 484,Gad,Fats,449.3,15.3,38.9,28.4,3.1,0.0,14.8,100g,15.0
+Cashews (Raw) Variation 485,Sugat,Fats,568.8,18.7,31.1,45.1,8.0,6.1,12.3,100g,20.0
+"Kidney Beans, cooked Variation 486",Osem,Grains,137.4,9.4,24.7,0.5,0.1,0.3,2.2,100g,150.0
+Almond Milk (Unsweetened) Variation 487,Shamir,Dairy,12.6,0.4,0.3,1.1,0.1,0.0,64.8,100ml,200.0
+"Tofu, firm Variation 488",Elite,Protein,146.6,15.3,2.9,8.9,1.3,0.0,14.3,100g,100.0
+Bell Pepper (Red) Variation 489,Shamir,Vegetables,31.8,1.0,6.1,0.3,0.0,4.3,4.1,100g,100.0
+Oat Milk Variation 490,Yotvata,Dairy,42.5,0.3,6.7,1.5,0.2,3.2,44.4,100ml,200.0
+Bell Pepper (Red) Variation 491,Elite,Vegetables,33.8,1.1,6.5,0.3,0.0,4.6,4.4,100g,100.0
+Flaxseeds Variation 492,Skippy,Fats,495.6,17.0,26.8,39.2,3.4,1.4,27.8,100g,15.0
+Grapes Variation 493,Carmel,Fruits,75.7,0.8,19.9,0.2,0.1,17.0,2.2,100g,100.0
+Mustard Variation 494,B&D,Spreads,65.8,4.4,5.3,3.3,0.2,0.9,1096.7,100g,10.0
+"Black Beans, cooked Variation 495",Allin,Grains,138.4,9.3,24.8,0.5,0.1,0.3,1.0,100g,150.0
+"Tofu, firm Variation 496",Super Effect,Protein,141.2,14.7,2.7,8.5,1.3,0.0,13.7,100g,100.0
+Orange Variation 497,Shkediya,Fruits,48.4,0.9,12.1,0.1,0.0,9.7,0.0,100g,130.0
+"Broccoli, cooked Variation 498",Sugat,Vegetables,32.4,2.2,6.7,0.4,0.1,1.3,38.0,100g,100.0
+Carrot Variation 499,Osem,Vegetables,39.1,0.9,9.2,0.2,0.0,4.5,65.9,100g,50.0

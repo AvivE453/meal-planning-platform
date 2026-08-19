@@ -1,7 +1,7 @@
-import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsIn,
+  IsInt,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -9,15 +9,14 @@ import {
   Min,
   MinLength,
   ValidateIf,
-  ValidateNested,
 } from 'class-validator';
 import type { NutritionLogSource } from '@meal-planning/shared-types';
-import { FoodItemDto } from './food-item.dto';
 
 const NUTRITION_LOG_SOURCE_VALUES: NutritionLogSource[] = [
   'meal_plan',
   'manual',
   'search',
+  'recipe',
 ];
 
 /**
@@ -60,17 +59,23 @@ export class CreateNutritionLogDto {
   @MinLength(1)
   mealPlanItemId?: string;
 
-  // source: 'search' — the FoodItem the client already has from a prior search response.
+  // source: 'search' — a food from a prior search response.
   @ValidateIf((o: CreateNutritionLogDto) => o.source === 'search')
-  @ValidateNested()
-  @Type(() => FoodItemDto)
-  foodItem?: FoodItemDto;
+  @IsInt()
+  @IsPositive()
+  foodItemId?: number;
+
+  // source: 'recipe' — a saved recipe logged directly, not via a plan item.
+  @ValidateIf((o: CreateNutritionLogDto) => o.source === 'recipe')
+  @IsString()
+  @MinLength(1)
+  recipeId?: string;
 
   // Servings eaten: optional for 'meal_plan' (defaults to the plan item's own
   // serving count), meaningless for 'manual' (the totals given already
-  // represent what was eaten). Required for 'search', but class-validator
-  // can't express "optional for A, required for B" on one property cleanly —
-  // NutritionLogsService enforces that one at the service layer instead.
+  // represent what was eaten). Required for 'search' and 'recipe', but
+  // class-validator can't express "optional for A, required for B" on one
+  // property cleanly — NutritionLogsService enforces that one at the service layer.
   @IsOptional()
   @IsNumber()
   @IsPositive()

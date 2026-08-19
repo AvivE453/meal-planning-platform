@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import type { DailyNutritionLog, MealPlan, MealSlot } from '@meal-planning/shared-types';
+import { Link } from 'react-router-dom';
+import type { DailyNutritionLog, MealPlan, MealPlanItem, MealSlot } from '@meal-planning/shared-types';
 import { ApiError, logsApi, mealPlansApi } from '../api/client';
 
 const SLOT_ORDER: MealSlot[] = ['breakfast', 'lunch', 'dinner', 'snack'];
@@ -10,10 +11,12 @@ function capitalize(text: string): string {
 
 export function MealPlanCard({
   plan,
+  date,
   onGenerated,
   onLogged,
 }: {
   plan: MealPlan | null;
+  date?: string;
   onGenerated: (plan: MealPlan) => void;
   onLogged: (log: DailyNutritionLog) => void;
 }) {
@@ -26,7 +29,7 @@ export function MealPlanCard({
     setError(null);
     setIsGenerating(true);
     try {
-      onGenerated(await mealPlansApi.generate());
+      onGenerated(await mealPlansApi.generate(date ? { date } : {}));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Something went wrong');
     } finally {
@@ -48,15 +51,50 @@ export function MealPlanCard({
     }
   };
 
+  const renderItem = (item: MealPlanItem) => (
+    <li key={item.id}>
+      <span>
+        {item.foodItem?.name ?? item.recipe?.name} × {item.servings}
+      </span>
+      <span className="meal-item-actions">
+        <span>{Math.round(item.calories)} kcal</span>
+        <button
+          type="button"
+          className="log-item-button"
+          disabled={pendingItemId === item.id || loggedItemIds.has(item.id)}
+          onClick={() => void handleLogItem(item.id)}
+        >
+          {loggedItemIds.has(item.id) ? 'Logged' : pendingItemId === item.id ? '…' : 'Log as eaten'}
+        </button>
+      </span>
+    </li>
+  );
+
   const totalCalories = plan?.items.reduce((sum, item) => sum + item.calories, 0) ?? 0;
 
   return (
     <div className="meal-plan-card">
       <div className="meal-plan-header">
         <span>{plan ? `Plan for ${plan.date}` : 'No meal plan yet'}</span>
-        <button type="button" onClick={() => void handleGenerate()} disabled={isGenerating}>
-          {isGenerating ? 'Generating…' : plan ? 'Regenerate' : 'Generate meal plan'}
-        </button>
+        <div className="meal-plan-actions">
+          <Link to="/recipes" className="meal-plan-header-link">
+            Show all my recipes
+          </Link>
+          <Link to="/recipes/new" className="meal-plan-header-link">
+            Make a recipe
+          </Link>
+          <button
+            type="button"
+            className="best-meal-button"
+            disabled
+            title="Coming soon — will pick the best meal for the calories and nutrients you have left today"
+          >
+            Find the best meal for you
+          </button>
+          <button type="button" onClick={() => void handleGenerate()} disabled={isGenerating}>
+            {isGenerating ? 'Generating…' : plan ? 'Regenerate' : 'Generate meal plan'}
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -76,6 +114,7 @@ export function MealPlanCard({
           <div className="meal-plan-totals">
             {Math.round(totalCalories)} / {Math.round(plan.calorieTarget)} kcal
           </div>
+
           {SLOT_ORDER.map((slot) => {
             const items = plan.items.filter((item) => item.mealSlot === slot);
             if (items.length === 0) {
@@ -84,30 +123,7 @@ export function MealPlanCard({
             return (
               <div className="meal-slot" key={slot}>
                 <div className="meal-slot-title">{capitalize(slot)}</div>
-                <ul className="meal-item-list">
-                  {items.map((item) => (
-                    <li key={item.id}>
-                      <span>
-                        {item.foodItem.name} × {item.servings}
-                      </span>
-                      <span className="meal-item-actions">
-                        <span>{Math.round(item.calories)} kcal</span>
-                        <button
-                          type="button"
-                          className="log-item-button"
-                          disabled={pendingItemId === item.id || loggedItemIds.has(item.id)}
-                          onClick={() => void handleLogItem(item.id)}
-                        >
-                          {loggedItemIds.has(item.id)
-                            ? 'Logged'
-                            : pendingItemId === item.id
-                              ? '…'
-                              : 'Log as eaten'}
-                        </button>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <ul className="meal-item-list">{items.map((item) => renderItem(item))}</ul>
               </div>
             );
           })}

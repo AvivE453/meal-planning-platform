@@ -5,6 +5,9 @@ function describe(log: DailyNutritionLog): string {
   if (log.foodItem) {
     return `${log.foodItem.name} × ${log.servings}`;
   }
+  if (log.recipe) {
+    return `${log.recipe.name} × ${log.servings}`;
+  }
   return 'Manual entry';
 }
 

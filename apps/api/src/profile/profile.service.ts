@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import type { UserProfile } from '@meal-planning/shared-types';
 import { PrismaService } from '../prisma/prisma.service';
 import type { UserProfile as PrismaUserProfile } from '../../generated/prisma/client';
 import type { UpsertProfileDto } from './dto/upsert-profile.dto';
+import { PROFILE_UPDATED_EVENT } from './events/profile-updated.event';
 
 @Injectable()
 export class ProfileService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   async upsert(userId: string, dto: UpsertProfileDto): Promise<UserProfile> {
     const profile = await this.prisma.userProfile.upsert({
@@ -31,6 +36,13 @@ export class ProfileService {
         weeklyRateKg: dto.weeklyRateKg ?? null,
       },
     });
+
+    // Observer: goal/height/activity/etc. all feed TargetsService's cached
+    // calculation, so any profile change can make it stale — emitAsync, not
+    // emit, so the response doesn't return before the cache is actually
+    // cleared (same reasoning as WeightLogsService's weight.logged emit).
+    await this.eventEmitter.emitAsync(PROFILE_UPDATED_EVENT, { userId });
+
     return toUserProfile(profile);
   }
 

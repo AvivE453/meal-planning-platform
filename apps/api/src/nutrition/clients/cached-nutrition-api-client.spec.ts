@@ -9,9 +9,10 @@ describe('CachedNutritionApiClient (Proxy, against a real Redis)', () => {
   let proxy: CachedNutritionApiClient;
 
   beforeAll(() => {
-    // A dedicated DB index keeps this from polluting (or being polluted by)
-    // whatever the app itself has cached on the default DB 0 — same Redis
-    // instance, isolated data.
+    // A dedicated DB index — distinct from both the app's default DB 0 and
+    // every other real-Redis spec file's own index — keeps this isolated
+    // from whatever the app itself has cached, and from parallel Jest
+    // workers' unconditional flushdb() calls in other files' beforeEach.
     redis = new Redis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
       db: 15,
     });

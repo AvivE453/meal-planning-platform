@@ -1,4 +1,5 @@
 import type { FoodItem } from './nutrition.js';
+import type { RecipeRef } from './recipe.js';
 
 export interface WeightLog {
   id: string;
@@ -34,15 +35,16 @@ export interface CreateActivityLogRequest {
   loggedAt?: string;
 }
 
-export type NutritionLogSource = 'meal_plan' | 'manual' | 'search';
+export type NutritionLogSource = 'meal_plan' | 'manual' | 'search' | 'recipe';
 
 export interface DailyNutritionLog {
   id: string;
   userId: string;
   date: string;
-  /** Resolved food, not just an id — a manual entry has neither this nor a mealPlanItemId. */
+  /** Resolved food, not just an id — a manual entry has none of these three. */
   foodItem: FoodItem | null;
   mealPlanItemId: string | null;
+  recipe: RecipeRef | null;
   servings: number;
   calories: number;
   proteinG: number;
@@ -72,12 +74,20 @@ export interface CreateMealPlanNutritionLogRequest {
 export interface CreateSearchNutritionLogRequest {
   source: 'search';
   date?: string;
-  /** The full FoodItem the client already has in hand from a prior search — the server has no other way to resolve nutrition from just an id. */
-  foodItem: FoodItem;
+  /** A food from a prior search result. */
+  foodItemId: number;
+  servings: number;
+}
+
+export interface CreateRecipeNutritionLogRequest {
+  source: 'recipe';
+  date?: string;
+  recipeId: string;
   servings: number;
 }
 
 export type CreateNutritionLogRequest =
   | CreateManualNutritionLogRequest
   | CreateMealPlanNutritionLogRequest
-  | CreateSearchNutritionLogRequest;
+  | CreateSearchNutritionLogRequest
+  | CreateRecipeNutritionLogRequest;

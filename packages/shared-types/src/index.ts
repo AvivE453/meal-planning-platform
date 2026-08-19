@@ -1,5 +1,6 @@
 export * from './user.js';
 export * from './nutrition.js';
+export * from './recipe.js';
 export * from './meal-plan.js';
 export * from './logs.js';
 export * from './auth.js';

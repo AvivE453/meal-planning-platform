@@ -10,6 +10,8 @@ import { HomePage } from './pages/HomePage';
 import { MealPlanPage } from './pages/MealPlanPage';
 import { WeightPage } from './pages/WeightPage';
 import { NutritionPage } from './pages/NutritionPage';
+import { RecipesPage } from './pages/RecipesPage';
+import { CreateRecipePage } from './pages/CreateRecipePage';
 
 type AuthView = 'login' | 'register';
 
@@ -45,6 +47,8 @@ function AppShell() {
         <Route path="plan" element={<MealPlanPage />} />
         <Route path="weight" element={<WeightPage />} />
         <Route path="nutrition" element={<NutritionPage />} />
+        <Route path="recipes" element={<RecipesPage />} />
+        <Route path="recipes/new" element={<CreateRecipePage />} />
       </Route>
     </Routes>
   );

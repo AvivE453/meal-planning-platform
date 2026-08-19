@@ -32,8 +32,12 @@ describe('TargetsService (cache-aside over a real Redis)', () => {
   let service: TargetsService;
 
   beforeAll(() => {
+    // Its own DB index (distinct from every other real-Redis spec file, not
+    // just from the app's default DB 0) — otherwise parallel Jest workers'
+    // unconditional flushdb() calls in beforeEach race and wipe each other's
+    // in-flight keys across files.
     redis = new Redis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
-      db: 15,
+      db: 14,
     });
   });
 
